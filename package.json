@@ -10,6 +10,7 @@
     "package": "plasmo package"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "plasmo": "0.85.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -28,6 +29,22 @@
   "manifest": {
     "host_permissions": [
       "https://*/*"
+    ],
+    "permissions": [
+      "scripting",
+      "activeTab",
+      "tabs",
+      "storage"
+    ],
+    "web_accessible_resources": [
+      {
+        "matches": [
+          "<all_urls>"
+        ],
+        "resources": [
+          "tabs/new-tab.html"
+        ]
+      }
     ]
   }
 }
