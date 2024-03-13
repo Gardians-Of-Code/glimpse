@@ -1,7 +1,8 @@
-import cn from "classnames";
 import cssText from "data-text:~style.css";
 import type { PlasmoCSConfig } from "plasmo";
 import { useEffect, useState } from "react";
+
+import { cn } from "~lib/utils";
 
 import { putWebsite, removeWebPage } from "./show-website";
 
@@ -134,13 +135,13 @@ const HoverWindow = () => {
       id="hoverWindow"
       className={cn(
         {
-          "plasmo-top-32 plasmo-right-8": windowPosition === "right",
-          "plasmo-top-32 plasmo-left-8": windowPosition === "left"
+          "top-32 right-8": windowPosition === "right",
+          "top-32 left-8": windowPosition === "left"
         },
         {
-          "plasmo-bg-slate-50 md:plasmo-w-[800px] md:plasmo-h-[600px] sm:plasmo-w-[300px] sm:plasmo-h-[400px] plasmo-z-240 plasmo-fixed":
+          "bg-red-950 md:w-[800px] md:h-[600px] sm:w-[300px] sm:h-[400px] z-240 fixed":
             isOpen,
-          "plasmo-hidden": !isOpen
+          hidden: !isOpen
         }
       )}></div>
   );
