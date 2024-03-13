@@ -13,6 +13,7 @@
       "~*": [
         "./src/*"
       ],
+      // Uncomment the following lines if you want to add a ui library and after installing it comment it again
       // "@*": [
       //   "./src/*"
       // ],
