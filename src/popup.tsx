@@ -1,21 +1,42 @@
-import { CountButton } from "~features/count-button"
+import { Button } from "~components/ui/button";
+import { CountButton } from "~features/count-button";
 
-import "~style.css"
+import "~style.css";
 
 function IndexPopup() {
   return (
-    <div className="plasmo-flex plasmo-flex-col plasmo-items-center plasmo-justify-center plasmo-h-16 plasmo-w-40">
+    <div className="flex flex-col items-center justify-center h-[160px] w-[160px]">
       <CountButton />
-      <button
+      <h2>
+        Welcome to your{" "}
+        <a
+          className="text-blue-500 underline"
+          href="https://www.plasmo.com"
+          target="_blank">
+          Plasmo
+        </a>{" "}
+        Extension!
+      </h2>
+      <Button
+        variant="secondary"
         onClick={() => {
           chrome.tabs.create({
             url: "./tabs/new-tab.html"
-          })
+          });
+        }}>
+        open new tab page
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => {
+          chrome.tabs.create({
+            url: "./tab"
+          });
         }}>
         open tab page
-      </button>
+      </Button>
     </div>
-  )
+  );
 }
 
-export default IndexPopup
+export default IndexPopup;
