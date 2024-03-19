@@ -1,0 +1,11 @@
+.weather {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  /* Added gap for spacing between icon and temperature */
+}
+
+.weather img {
+  width: 38px;
+  /* Adjusted image size */
+}
