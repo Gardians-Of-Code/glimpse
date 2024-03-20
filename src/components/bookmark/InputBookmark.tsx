@@ -1,5 +1,5 @@
 import "./Bookmarks.css";
-import bkmrk from "./bookmark";
+import {type bkmrk} from "./bookmark";
 import { Plus } from "lucide-react";
 
 function InputBookmark({ bookmark, setBookmark, handleAdd }: bkmrk) {

@@ -1,0 +1,78 @@
+.settings-main{
+    position: absolute;
+    bottom: 2vh;
+    right: 2vw;
+    display: block;
+    /* border: 2px solid red; */
+}
+
+.settings-div{
+    background-color: rgba(202, 216, 216, 0.57);
+    display: block;
+    width: 15vw;
+    border: 2px solid black;
+    border-radius: 10px;
+    position: absolute;
+    right: 0vw;
+    bottom: 3vh;
+}
+
+.setting{
+    position: absolute;
+    bottom: 0vh;
+    right: 0vw;
+    color: rgb(228, 234, 234);
+    cursor: pointer;
+}
+
+.buttons{
+    list-style-type: none;
+}
+
+.buttons li{
+    padding: 5px 5px;
+    margin: 5px 5px;
+}
+
+.buttons li:hover{
+    background-color: rgba(163, 169, 169, 0.858);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.ImageDialog{
+    position: fixed;
+}
+
+#Imgdialog{
+    color: white;
+}
+
+#editImageDialog{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    border-radius: 20px;
+    width: 100%;
+    height: 40vh;
+}
+
+#editImageDialog h1{
+    font-size: 2rem;
+}
+
+.add-url{
+    margin: 15px 5px;
+    padding: 5px 5px;
+}
+
+.add-file{
+    margin: 15px 5px;
+    padding: 5px 5px;
+}
+
+#input-url, #input-file{
+    color: black;
+    margin: 0px 10px;
+}

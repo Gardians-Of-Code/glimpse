@@ -1,184 +1,193 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
 .bookmark-container {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.22);
-    /* background-color: linear-gradient(to right, red , yellow); */
-    backdrop-filter: blur(4px);
+  flex-grow: 0;
+  width: 100%;
+  height: 100%;
+  /* padding: 10px; */
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.22);
+  /* background-color: linear-gradient(to right, red , yellow); */
+  backdrop-filter: blur(4px);
 }
 
 .bookmark-button {
-    height: 50px;
-    border-radius: 2px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    /* background-color: rgba(202, 216, 216, 0.692); */
-    /* border: solid 2px rgb(255, 255, 255); */
+  height: 50px;
+  border-radius: 2px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  /* background-color: rgba(202, 216, 216, 0.692); */
+  /* border: solid 2px rgb(255, 255, 255); */
 }
-
 
 .bookmark_toggle {
-    margin-left: 10px;
-    /* color: rgb(0, 0, 0);  */
-    /* backdrop-filter: invert(100%); */
-    color: invert(100%);
+  margin-left: 10px;
+  /* color: rgb(0, 0, 0);  */
+  /* backdrop-filter: invert(100%); */
+  color: invert(100%);
 }
-.bookmark_toggle:hover{
-    color: rgb(163, 163, 163);
+.bookmark_toggle:hover {
+  color: rgb(163, 163, 163);
 }
 
 .bookmark_heading {
-    font-family: "Raleway", sans-serif;
-    /* font-optical-sizing: auto; */
-    font-style: normal;
-    font-weight: bold;
-    /* font-size: x-large; */
+  font-family: "Raleway", sans-serif;
+  /* font-optical-sizing: auto; */
+  font-style: normal;
+  font-weight: bold;
+  /* font-size: x-large; */
 
-    text-align: center;
-    /* color: aquamarine; */
-    font-size: larger;
-    padding-right: 20px;
-    display: block;
-    margin: 0 auto;
+  text-align: center;
+  /* color: aquamarine; */
+  font-size: larger;
+  padding-right: 20px;
+  display: block;
+  margin: 0 auto;
 }
 
 .bookmark-dropdown {
-    width: 100%;
-    border-radius: 10px;
-    text-align: center;
-    /* background-color: rgba(202, 216, 216, 0.692); */
-    display: inline-block;
-   
-    height: 100%;
-    overflow: hidden;
+  width: 100%;
+  border-radius: 10px;
+  text-align: center;
+  /* background-color: rgba(202, 216, 216, 0.692); */
+  display: inline-block;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
 }
 
 .types {
-    list-style: none;
-    display: flex;
-    justify-content: left;
-    margin-bottom: 15px;
-    padding: 0px 0px;
-    /* border-bottom: 2px solid black; */
+  list-style: none;
+  display: flex;
+  justify-content: left;
+  margin-bottom: 15px;
+  padding: 0px 0px;
+  /* border-bottom: 2px solid black; */
 }
-
 
 .bookmark-types {
-    font-family: "Raleway", sans-serif;
-    font-size: small ;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    margin: 7px 5px;
-    padding: 5px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.688);
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255,0);
-}
-.bookmark-types:hover{
-    background-color: rgba(0, 0, 0, 0.194);
+  font-family: "Raleway", sans-serif;
+  font-size: small;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  /* margin: 7px 5px; */
+  /* padding: 5px 10px; */
+  border: 1px solid rgba(255, 255, 255, 0.688);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0);
 }
 
-.bookmark-elements {
-    width:calc(100% - 10px);
-    padding: 10px 10px;
-    margin: 5px 5px;
-    display: flex;
-    align-items: center;
-    /* justify-content: space-between; Align items to left and right */
-    background-color: rgba(0, 0, 0, 0.43);
-    margin-bottom: 10px;
-    border-radius: 8px;
+.bookmark-types-active {
+  background-color: black;
+  color: white;
 }
-.bookmark-elements:hover{
-    background-color: rgba(0, 0, 0, 0.66);
+.bookmark-types:hover {
+  background-color: rgba(0, 0, 0, 0.194);
+  color: white;
+}
+.bookmark-elements {
+  width: 100%;
+  padding: 10px 10px;
+  /* margin: 5px 5px; */
+  display: flex;
+  align-items: center;
+  /* justify-items: stretch; */
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.43);
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+.bookmark-elements:hover {
+  background-color: rgba(0, 0, 0, 0.66);
 }
 
 .each_bookmark_img {
-    height: 100%;
-    width: 25px;
-    margin-left: 5px;
-    margin-right: 5px;
+  height: 100%;
+  width: 25px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .each_bookmark_title {
-    width: calc(100%-100px);
-    font-family: "Raleway", sans-serif;
-    font-size: large;
-    font-weight: 300;
-    color: white;
-    padding-left: 10px;
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Show ellipsis for overflow text */
-    transition: width 0.3s ease; /* Smooth transition for width change */
+  /* width: calc(100%-100px); */
+  /* flex: 1 1 0%;  */
+  /* flex-grow: 0; */
+  width: 200px;
+  font-family: "Raleway", sans-serif;
+  font-size: large;
+  font-weight: 300;
+  color: white;
+  /* padding-left: 10px; */
+  white-space: wrap;
+  /* text-wrap: wrap; */
+  /* word-wrap: ; */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis for overflow text */
+  transition: width 0.3s ease; /*Smooth transition for width change */
 }
 
 .each_bookmark_title:hover {
-    overflow: visible; /* Show full text on hover */
-    z-index: 10;
+  /* overflow: visible;  */
+  /* word-wrap: break-word; */
+  /* z-index: 10; */
 }
 
 .delete {
-    padding: 1px;
-    margin-right: 15px;
-    color: rgb(236, 116, 116);
-    position: absolute;
-    right: 10px;
-    
-
+  padding: 1px;
+  margin-left: 10px;
+  color: #ec7474;
+  /* position: absolute; */
+  /* right: 10px; */
 }
-.delete:hover{
-    color: rgb(255, 0, 0);
+.delete:hover {
+  color: rgb(255, 0, 0);
 }
 
 .edit {
-    padding: 2px;
-    margin-right: 15px;
-    color: rgb(186, 186, 186);;
-    padding: 1px;
-    position: absolute;
-    right: 50px;
+  padding: 2px;
+  margin-left: 8px;
+  color: #bababa;
+  /* padding: 1px; */
+  /* position: absolute; */
+  /* right: 50px; */
 }
-.edit:hover{
-    color: white;
+.edit:hover {
+  color: white;
 }
 
 .newBookmark {
-    width:calc(100% - 25px);
-    height: 50px;
-    margin-left: 2px;
-    display: flex;
-    align-items: center;
-    position: absolute;
-    bottom: 13px;
-    background-color: rgba(255, 255, 255, 0.37);
-    border-radius: 8px;
+  width: calc(100% - 26px);
+  /* width: 100%; */
+  height: 50px;
+  /* margin-left: 2px; */
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 13px;
+  bottom: 13px;
+  background-color: rgba(255, 255, 255, 0.37);
+  border-radius: 8px;
 }
 .newBookmark:hover {
-    background-color: rgba(255, 255, 255, 0.19);
+  background-color: rgba(255, 255, 255, 0.19);
 }
 
 .plus {
-    margin-left: 13px;
-    color: white;
+  margin-left: 13px;
+  color: white;
 }
-.newBookmark_input{
-    width: 100%;
-    background-color: transparent; 
-    color: white; 
-    padding: 8px;
-    padding-left: 10px;
-    transition: background-color 0.3s ease;
-
+.newBookmark_input {
+  width: 100%;
+  background-color: transparent;
+  color: white;
+  padding: 8px;
+  padding-left: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .newBookmark_input::placeholder {
-    color: white; /* Set placeholder color to white */
+  color: white; /* Set placeholder color to white */
 }
-

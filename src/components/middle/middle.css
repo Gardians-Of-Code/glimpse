@@ -12,6 +12,7 @@
   height: 20%;
   font-family: cursive;
   font-size: medium;
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,6 +21,7 @@
 .center_card {
   height: 50%;
   width: 100%;
+  min-height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;

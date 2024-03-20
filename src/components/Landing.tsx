@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Bookmarks from "~components/bookmark/Bookmarks";
 import Middle from "~components/middle/Middle";
 import WeatherCard from "~components/weather_todo/WeatherCard";
+import Settings from "~components/weather_todo/Setting";
 
 const Landing = () => {
   const [backgroundImage, setBackgroundImage] = useState("");
@@ -27,13 +28,14 @@ const Landing = () => {
           // "bg-transparent",
           // "bg-coolImage",
           //   "bg-random",
-          `bg-cover`
+          `bg-cover`,
         )}
-        style={{ backgroundImage: `url(${backgroundImage})` }}>
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
         <div className="flex w-full h-full">
           {/* bookmarks - Raman Sharma*/}
 
-          <div className=" md:basis-1/4 p-4">
+          <div className=" md:basis-1/4 p-4 flex">
             <Bookmarks />
           </div>
 
@@ -44,7 +46,7 @@ const Landing = () => {
 
           {/* Todo */}
           <div className=" relative md:basis-1/4 h-full p-4">
-            {/* <weather_todo /> */}
+            <Settings />
             <WeatherCard />
           </div>
         </div>

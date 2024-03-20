@@ -1,16 +1,17 @@
+import { useEffect, useRef, useState } from "react";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { Pencil, Trash2, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Pencil, Trash2, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "~components/use-on-click-outside";
 
 type QuickLinksType = {
@@ -23,7 +24,7 @@ const QuickLinks = () => {
   const [quickLinks, setQuickLinks] = useState<QuickLinksType[]>(
     localStorage.getItem("quickLinks")
       ? JSON.parse(localStorage.getItem("quickLinks") as string)
-      : []
+      : [],
   );
 
   const handleAddLink = (title: string, url: string) => {
@@ -43,7 +44,7 @@ const QuickLinks = () => {
           return { index, title, url };
         }
         return link;
-      })
+      }),
     );
   };
 
@@ -78,7 +79,7 @@ const LinkBox = ({
   index,
   url,
   onRemove,
-  onEdit
+  onEdit,
 }: QuickLinksType & {
   onRemove: (index: number) => void;
   onEdit: (index: number, title: string, url: string) => void;
@@ -97,15 +98,19 @@ const LinkBox = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <div
-              className="flex flex-col items-center justify-center bg-black/70 m-4 p-4 rounded-xl cursor-pointer hover:bg-black/50 transition-all duration-300 ease-in-out"
+              className=" max-h-[80px] w-[80px] flex flex-col items-center justify-center bg-black/70 m-4 px-4 pt-2 pb-2 rounded-xl cursor-pointer hover:bg-black/50 transition-all duration-300 ease-in-out "
               onClick={() => {
                 window.open(url, "_self");
-              }}>
+              }}
+            >
               <img
                 src={`https://www.google.com/s2/favicons?domain=${url}`}
                 alt={title}
-                className="w-[40px]"
+                className="w-[35px] mb-1"
               />
+              <span className="text-white text-xs w-full text-center border-t-2 border-white/50 pt-1 max-w-[70px] max-h-[30px] truncate">
+                {title}
+              </span>
             </div>
           </TooltipTrigger>
           <TooltipContent>
@@ -114,15 +119,17 @@ const LinkBox = ({
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsOpen(true);
-                }}>
-                <Pencil />
+                }}
+              >
+                <Pencil className=" text-[#bababa] hover:text-white" />
               </span>
               <span
                 onClick={(e) => {
                   e.stopPropagation();
                   onRemove(index);
-                }}>
-                <Trash2 />
+                }}
+              >
+                <Trash2 className="text-[#ec7474] hover:text-red-500" />
               </span>
             </div>
           </TooltipContent>
@@ -143,7 +150,7 @@ const LinkBox = ({
 };
 
 const AddLinkBox = ({
-  handleAddLink
+  handleAddLink,
 }: {
   handleAddLink: (title: string, url: string) => void;
 }) => {
@@ -154,14 +161,16 @@ const AddLinkBox = ({
   return (
     <>
       <div
-        className="flex flex-col items-center justify-center bg-black/70 m-4 py-4 px-2 rounded-xl cursor-pointer hover:bg-black/50 transition-all duration-300 ease-in-out"
+        className="flex flex-col items-center justify-center bg-black/70 m-4 pt-2 pb-4 px-1  rounded-full cursor-pointer hover:bg-black/50 transition-all duration-300 ease-in-out"
         onClick={() => {
           setIsOpen(true);
-        }}>
+        }}
+      >
         <Button
           variant={"ghost"}
-          className="bg-transparent hover:bg-transparent place-items-center">
-          <span className="text-4xl text-white">+</span>
+          className="bg-transparent hover:bg-transparent place-items-center rounded-full"
+        >
+          <span className="text-4xl text-white rounded-full">+</span>
         </Button>
       </div>
       {isOpen && (
@@ -178,7 +187,7 @@ const AddLinkBox = ({
 const AddLinkDialog = ({
   isOpen,
   closeDialogue,
-  handleAddLink
+  handleAddLink,
 }: {
   isOpen: boolean;
   closeDialogue: () => void;
@@ -201,17 +210,20 @@ const AddLinkDialog = ({
     <div
       className={cn(
         "fixed top-0 left-0 w-full h-full z-[99999] bg-transparent flex items-center justify-center",
-        isOpen ? "" : "hidden"
-      )}>
+        isOpen ? "" : "hidden",
+      )}
+    >
       <div
         id="addLinkDialog"
         ref={addLinkDialogRef}
-        className=" relative basis-4/10 h-max bg-slate-100 rounded-lg flex flex-col justify-center">
+        className=" relative basis-4/10 h-max bg-popover text-popover-foreground rounded-lg flex flex-col justify-center"
+      >
         <span
           className="absolute top-1 right-1 cursor-pointer"
           onClick={() => {
             closeDialogue();
-          }}>
+          }}
+        >
           <X />
         </span>
         <div className="absolute top-1 left-1">
@@ -223,7 +235,10 @@ const AddLinkDialog = ({
             <Input
               id="title"
               type="text"
-              className="text-white"
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect="off"
+              // className="focus:outline-none"
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
@@ -233,29 +248,35 @@ const AddLinkDialog = ({
             <Label htmlFor="url">Url</Label>
             <Input
               id="url"
-              type="text"
-              className="text-white"
+              type="url"
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck="false"
+              // className="focus:outline-none"
               onChange={(e) => {
                 setUrl(e.target.value);
               }}
             />
           </div>
-          <div className="w-full mt-2 flex items-center justify-between">
+          <div className="w-full mt-2 pt-2 flex items-center justify-between">
             <Button
-              variant={"default"}
+              variant={"secondary"}
               className=""
               onClick={() => {
                 closeDialogue();
-              }}>
+              }}
+            >
               cancel
             </Button>
             <Button
-              variant={"default"}
+              variant={"secondary"}
               className=""
               onClick={() => {
                 handleAddLink(title, url);
                 closeDialogue();
-              }}>
+              }}
+            >
               Add link
             </Button>
           </div>
@@ -271,7 +292,7 @@ const EditLinkDialog = ({
   handleEditLink,
   title,
   url,
-  index
+  index,
 }: {
   isOpen: boolean;
   closeDialogue: () => void;
@@ -318,17 +339,20 @@ const EditLinkDialog = ({
     <div
       className={cn(
         "fixed top-0 left-0 w-full h-full z-[99999] bg-transparent flex items-center justify-center",
-        isOpen ? "" : "hidden"
-      )}>
+        isOpen ? "" : "hidden",
+      )}
+    >
       <div
         id="editLinkDialog"
         ref={editLinkDialogRef}
-        className=" relative basis-4/10 h-max bg-slate-100 rounded-lg flex flex-col justify-center">
+        className=" relative basis-4/10 h-max bg-popover text-popover-foreground rounded-lg flex flex-col justify-center"
+      >
         <span
           className="absolute top-1 right-1 cursor-pointer"
           onClick={() => {
             closeDialogue();
-          }}>
+          }}
+        >
           <X />
         </span>
         <div className="absolute top-1 left-1">
@@ -340,7 +364,10 @@ const EditLinkDialog = ({
             <Input
               id="newTitle"
               type="text"
-              className="text-white"
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect="off"
+              // className="focus:outline-none"
               value={newTitle}
               onChange={(e) => {
                 setNewTitle(e.target.value);
@@ -351,9 +378,13 @@ const EditLinkDialog = ({
             <Label htmlFor="newUrl">Url</Label>
             <Input
               id="newUrl"
-              type="text"
-              className="text-white"
+              type="url"
+              // className="focus:outline-none"
               value={newUrl}
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck="false"
               onChange={(e) => {
                 setNewUrl(e.target.value);
               }}
@@ -365,7 +396,8 @@ const EditLinkDialog = ({
               className=""
               onClick={() => {
                 closeDialogue();
-              }}>
+              }}
+            >
               cancel
             </Button>
             <Button
@@ -374,7 +406,8 @@ const EditLinkDialog = ({
               onClick={() => {
                 handleEditLink(index, newTitle, newUrl);
                 closeDialogue();
-              }}>
+              }}
+            >
               Edit link
             </Button>
           </div>

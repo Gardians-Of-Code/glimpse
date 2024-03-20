@@ -35,9 +35,7 @@ const Middle = () => {
     <>
       <div className="middle">
         {/* quote */}
-        <div className="quote">
-          <span>{quote}</span>
-        </div>
+        <div className="quote">{quote}</div>
 
         {/*center_card*/}
         <div className="center_card backdrop-blur-[2px]">
