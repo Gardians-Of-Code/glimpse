@@ -1,6 +1,6 @@
-// import SearchBar from "@/components/serarchbar";
+
 import { cn } from "@/lib/utils";
-import { useEffect, useState, type SetStateAction } from "react";
+import { lazy, useEffect, useState, type SetStateAction } from "react";
 
 import Bookmarks from "~components/bookmark/Bookmarks";
 import Middle from "~components/middle/Middle";
@@ -8,6 +8,9 @@ import Setting from "~components/weather_todo/Setting";
 import WeatherCard from "~components/weather_todo/WeatherCard";
 
 import { retrieveData } from "./indexedDb";
+// const Setting = lazy(() => import("~components/weather_todo/Setting"));
+// const WeatherCard = lazy(() => import("~components/weather_todo/WeatherCard"));
+// const Bookmarks = lazy(() => import("~components/bookmark/Bookmarks"));
 
 const Landing = () => {
   const [backgroundImage, setBackgroundImage] = useState<string>("");
@@ -22,10 +25,6 @@ const Landing = () => {
         console.error(error);
       });
   }, []);
-
-  useEffect(() => {
-    console.log("backgroundImage", backgroundImage);
-  }, [backgroundImage]);
 
   return (
     <>

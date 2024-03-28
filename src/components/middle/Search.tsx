@@ -13,7 +13,7 @@ function Search() {
     event.preventDefault();
     let query;
     let search_engine = "";
-    console.log(Active);
+    // console.log(Active);
     if (Active == true) {
       search_engine = "bing";
       query = InputRef1.current?.value

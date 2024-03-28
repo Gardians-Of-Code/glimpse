@@ -89,7 +89,7 @@ const SearchBar = () => {
         }
       }
       // final_transcript = capitalize(final_transcript);
-      console.log(finalSearchQuery);
+      // console.log(finalSearchQuery);
       // final_span.innerHTML = linebreak(final_transcript);
       // interim_span.innerHTML = linebreak(interim_transcript);
       // };
@@ -139,7 +139,7 @@ const SearchBar = () => {
     if (!isListening) {
       if (voiceSearch) {
         setQueary(finalSearchQuery);
-        console.log(finalSearchQuery);
+        // console.log(finalSearchQuery);
         searchHandler(finalSearchQuery, searchEngine);
         setVoiceSearch(false);
       } else {

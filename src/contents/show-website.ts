@@ -15,7 +15,7 @@ function findHoverWindow() {
 }
 
 const fetchHtml = async (url: string, showLanguage: string) => {
-  console.log("fetching...", url, showLanguage)
+  // console.log("fetching...", url, showLanguage)
   const response = await fetch("http://localhost:3000/api/v1/proxy", {
     method: "POST",
     headers: {
@@ -35,7 +35,7 @@ export const showWebPage = async (
 ) => {
   const iframe = document.createElement("iframe");
   iframe.srcdoc = "<h1>Loading...</h1>";
-  console.log("loading...");
+  // console.log("loading...");
   iframe.width = "100%";
   iframe.height = "100%";
   let readingTime = 0;
@@ -66,7 +66,7 @@ export async function putWebsite(url: string, showLanguage: string) {
       if (hoverWindow) {
         clearInterval(intervalId);
         const readingTime = showWebPage(url, showLanguage, hoverWindow);
-        console.log("readingTime 1", readingTime);
+        // console.log("readingTime 1", readingTime);
         resolve(readingTime);
       }
     }, 1000); // Check every 1000ms (1 second)

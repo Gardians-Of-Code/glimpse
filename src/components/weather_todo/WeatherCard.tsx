@@ -20,7 +20,9 @@ const WeatherCard = () => {
 
   // weather data
   const [weatherData, setWeatherData] = useState(null);
-  const [weatherIcon, setWeatherIcon] = useState<string>("");
+  const [weatherIcon, setWeatherIcon] = useState<string>(
+    localStorage.getItem("weatherIcon") || ""
+  );
   const [weatherIconCode, setWeatherIconCode] = useState<string>("");
   const [loacation, setLocation] = useState<locationType>(
     localStorage.getItem("location")
@@ -30,7 +32,11 @@ const WeatherCard = () => {
   const [place, setPlace] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [temp, setTemp] = useState<number | null>(null);
+  const [temp, setTemp] = useState<number | null>(
+    localStorage.getItem("temp")
+      ? parseFloat(localStorage.getItem("temp") as string)
+      : null
+  );
   const [maxTemp, setMaxTemp] = useState<number | null>(null);
   const [minTemp, setMinTemp] = useState<number | null>(null);
   const [feelsLike, setFeelsLike] = useState<number | null>(null);
@@ -89,6 +95,7 @@ const WeatherCard = () => {
           setWeatherIconCode(data.weather[0].icon);
           setDescription(data.weather[0].description);
           setTemp(data.main.temp);
+          localStorage.setItem("temp", data.main.temp);
           setFeelsLike(data.main.feels_like);
           setMaxTemp(data.main.temp_max);
           setMinTemp(data.main.temp_min);
@@ -107,6 +114,7 @@ const WeatherCard = () => {
         .then((blob) => {
           const url = URL.createObjectURL(blob);
           setWeatherIcon(url);
+          localStorage.setItem("weatherIcon", url);
         });
     }
   }, [weatherIconCode]);
@@ -128,7 +136,7 @@ const WeatherCard = () => {
             "relative h-[70px] w-max flex items-center justify-center rounded-lg",
             loading ? "animate-pulse" : ""
           )}>
-          <img src={weatherIcon} alt={description} className="h-full" />
+          <img src={weatherIcon} alt={""} className="h-full" />
           <div className="flex flex-col items-center justify-center">
             <span className="text-3xl font-medium antialiased">
               {Math.round(temp as number).toString() +

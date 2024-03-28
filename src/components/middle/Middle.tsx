@@ -1,22 +1,24 @@
-import QuickLinks from "@/components/middle/QuickLinks";
-import SearchBar from "@/components/middle/searchbar";
-import DateNTime from "@/components/middle/DateNTime";
 // import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
+
 import "./middle.css";
+
+// const SearchBar = lazy(() => import("@/components/middle/searchbar2"));
+
+import DateNTime from "@/components/middle/DateNTime";
+// const DateNTime = lazy(() => import("@/components/middle/DateNTime"));
+
+import QuickLinks from "@/components/middle/QuickLinks";
+import SearchBar from "@/components/middle/searchbar2";
+
 import Greet from "./Greet";
+
+// const QuickLinks = lazy(() => import("@/components/middle/QuickLinks"));
 
 const Middle = () => {
   const [quote, setQuote] = useState("");
-  const [time, setTime] = useState<Date>();
-
   useEffect(() => {
     fetchQuote();
-    fetchTime();
-    // on unmount
-    return () => {
-      clearInterval(timeInterval);
-    };
   }, []);
 
   const fetchQuote = async () => {
@@ -25,12 +27,6 @@ const Middle = () => {
     setQuote(data.content);
   };
 
-  const fetchTime = () => {
-    const date = new Date();
-    setTime(date);
-  };
-
-  const timeInterval = setInterval(fetchTime, 60 * 1000);
   return (
     <>
       <div className="middle">

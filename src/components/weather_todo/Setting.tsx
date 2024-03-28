@@ -18,6 +18,7 @@ const Setting = ({
   setBackgroundImage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [dialogueOpen, setDialogueOpen] = useState<boolean>(false);
+  const [settingsDialogOpen, setSettingsDialogOpen] = useState<boolean>(false);
   const [backgroundType, setBackgroundType] = useState<string>(
     localStorage.getItem("backgroundType") || "random"
   );
@@ -68,7 +69,7 @@ const Setting = ({
       const url = `https://source.unsplash.com/1920x1080/?${backgroundType}`;
       fetchRandomImage(url);
     }
-  }, [backgroundType, backgroundImage]);
+  }, [backgroundType]);
 
   useEffect(() => {}, [backgroundImage, backgroundType]);
 
@@ -79,11 +80,21 @@ const Setting = ({
         <Settings
           className={cn(
             "h-full rotate  cursor-pointer",
-            dialogueOpen ? "hidden" : ""
+            settingsDialogOpen ? "hidden" : ""
           )}
-          onClick={() => setDialogueOpen(true)}
+          onClick={() => {
+            setSettingsDialogOpen(true);
+            setDialogueOpen(true);
+          }}
         />
       </div>
+
+      {/* Settings dialogue */}
+      <div
+        className={cn(
+          "fixed bottom-4 right-4 w-40 h-40 flex items-center justify-center bg-green-500 rounded-md",
+          settingsDialogOpen ? "" : "hidden"
+        )}></div>
 
       {/* Background image set dialogue */}
       <div
@@ -112,12 +123,11 @@ const Setting = ({
             <Dropzone
               onDrop={(acceptedFiles) => {
                 // if the given file is not an image
-                console.log(acceptedFiles[0].type);
+                // console.log(acceptedFiles[0].type);
                 if (!acceptedFiles[0].type.includes("image")) {
-                  console.log("not an image");
+                  // console.log("not an image");
                   return;
                 }
-
                 // create a FileReader instance
                 const reader = new FileReader();
 
