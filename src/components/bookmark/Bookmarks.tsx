@@ -180,7 +180,7 @@ function Bookmarks() {
     <>
       <Star
         className={cn(
-          "bookmark_toggle cursor-pointer",
+          "bookmark_toggle cursor-pointer hover:scale-110 transform transition-transform duration-300 ease-in-out",
           showBookmarks === "closed" ? "" : "hidden",
         )}
         onClick={() => {

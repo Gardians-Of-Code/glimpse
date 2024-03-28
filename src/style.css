@@ -79,7 +79,7 @@
     
   }
   #landing {
-    background-image: url("https://source.unsplash.com/random");
+    /* background-image: url("https://source.unsplash.com/random"); */
     background-size: contain no-repeat;
   }
 }

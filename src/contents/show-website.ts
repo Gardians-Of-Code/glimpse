@@ -14,21 +14,25 @@ function findHoverWindow() {
   return null;
 }
 
-const fetchHtml = async (url: string) => {
+const fetchHtml = async (url: string, showLanguage: string) => {
+  console.log("fetching...", url, showLanguage)
   const response = await fetch("http://localhost:3000/api/v1/proxy", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({ url })
+    body: JSON.stringify({ url, showLanguage })
   });
   const readingTime = parseInt(response.headers.get("x-reading-time") || "0");
   const html = await response.text();
   return { html, readingTime };
 };
 
-export const showWebPage = async (url: string, hoverWindow: HTMLElement | Element) => {
+export const showWebPage = async (
+  url: string,
+  showLanguage: string,
+  hoverWindow: HTMLElement | Element
+) => {
   const iframe = document.createElement("iframe");
   iframe.srcdoc = "<h1>Loading...</h1>";
   console.log("loading...");
@@ -36,7 +40,10 @@ export const showWebPage = async (url: string, hoverWindow: HTMLElement | Elemen
   iframe.height = "100%";
   let readingTime = 0;
 
-  const { html, readingTime: fetchedReadingTime } = await fetchHtml(url);
+  const { html, readingTime: fetchedReadingTime } = await fetchHtml(
+    url,
+    showLanguage
+  );
   iframe.srcdoc = html;
   readingTime = fetchedReadingTime;
 
@@ -52,13 +59,13 @@ export const removeWebPage = () => {
   }
 };
 
-export async function  putWebsite(url: string = "") {
+export async function putWebsite(url: string, showLanguage: string) {
   return new Promise<number>((resolve) => {
     const intervalId = setInterval(() => {
       const hoverWindow = findHoverWindow();
       if (hoverWindow) {
         clearInterval(intervalId);
-        const readingTime = showWebPage(url, hoverWindow);
+        const readingTime = showWebPage(url, showLanguage, hoverWindow);
         console.log("readingTime 1", readingTime);
         resolve(readingTime);
       }

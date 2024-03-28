@@ -1,9 +1,29 @@
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "@/components/ui/popover";
 import cssText from "data-text:~style.css";
-import { Bookmark, BookmarkCheck, Languages, Text } from "lucide-react";
+import {
+  Bookmark,
+  BookmarkCheck,
+  Check,
+  ChevronsUpDown,
+  Languages,
+  Text,
+  X
+} from "lucide-react";
 import type { PlasmoCSConfig } from "plasmo";
 import { useEffect, useRef, useState } from "react";
 
-import { useOnClickOutside } from "~components/use-on-click-outside";
 import { cn } from "~lib/utils";
 
 import {
@@ -51,6 +71,24 @@ const HoverWindow = () => {
   const [isBoockmarked, setIsBoockmarked] = useState<boolean>(
     checkIfBookmarked(currentHoveredLink)
   );
+  const [lock, setLock] = useState<boolean>(false);
+  const [showLanguage, setShowLanguage] = useState<string>("de");
+  const [languageSelctorOpen, setLanguageSelctorOpen] =
+    useState<boolean>(false);
+
+  const languageOptions = [
+    { value: "en", name: "English" },
+    { value: "es", name: "Spanish" },
+    { value: "fr", name: "French" },
+    { value: "de", name: "German" },
+    { value: "it", name: "Italian" },
+    { value: "nl", name: "Dutch" },
+    { value: "pt", name: "Portuguese" },
+    { value: "ru", name: "Russian" },
+    { value: "zh", name: "Chinese" },
+    { value: "ja", name: "Japanese" },
+    { value: "ko", name: "Korean" }
+  ];
 
   const updateViewPortWidth = () => {
     setViewPortWidth(window.innerWidth);
@@ -102,7 +140,7 @@ const HoverWindow = () => {
           }
           // setIsOpen(true);
           setCurrentHoveredLink(anchor.href);
-        }, 400); // 500ms delay
+        }, 800); // 500ms delay
       });
       anchor.addEventListener("mouseout", (e) => {
         clearTimeout(hoverTimeout);
@@ -114,13 +152,13 @@ const HoverWindow = () => {
   useEffect(() => {
     if (currentHoveredLink !== "") {
       // console.log("currentHoveredLink: ", currentHoveredLink)
-      putWebsite(currentHoveredLink).then((readingTime) => {
+      putWebsite(currentHoveredLink, showLanguage).then((readingTime) => {
         setReadingTime(readingTime);
       });
       setIsOpen(true);
       // setLockWindow(true)
     }
-  }, [currentHoveredLink]);
+  }, [currentHoveredLink, showLanguage]);
 
   // const hoverContainerRef = useRef<HTMLDivElement>(null);
   // useOnClickOutside(hoverContainerRef, () => {
@@ -148,7 +186,7 @@ const HoverWindow = () => {
       // ref={hoverContainerRef}
       id="hoverContainer"
       className={cn(
-        "bg-black/70 backdrop-blur-sm dark:bg-white/70 md:w-[800px] md:h-[640px] sm:w-[300px] sm:h-[440px] z-240 py-2 fixed rounded-[20px] overflow-hidden shadow-lg border-2 border-gray-800",
+        "bg-black/70 backdrop-blur-sm dark:bg-white/70 md:w-[800px] md:h-[640px] sm:w-[300px] sm:h-[440px] py-2 fixed rounded-[20px] overflow-hidden shadow-lg border-2 border-gray-800",
         {
           "top-20 right-8": windowPosition === "right",
           "top-20 left-8": windowPosition === "left"
@@ -161,12 +199,14 @@ const HoverWindow = () => {
         <div className="">
           Estimated Reading Time: <span> {readingTime} </span> minutes
         </div>
-        <div className="flex items-center justify-center">
-          <div className="h-full px-2 ">
-            <Text className="cursor-pointer" />
-            {/* <span>Summerize</span> */}
+        <div className="flex gap-2 items-center justify-center">
+          <div className="h-full">
+            <Languages />
           </div>
-          <div className="h-full px-2 ">
+          <div className="h-full">
+            <Text className="cursor-pointer" />
+          </div>
+          <div className="h-full">
             {isBoockmarked ? (
               <BookmarkCheck
                 className={cn("cursor-pointer")}
@@ -185,6 +225,9 @@ const HoverWindow = () => {
               />
             )}
             {/* <span>Bookmark</span> */}
+          </div>
+          <div className="h-full">
+            <X className="cursor-pointer" />
           </div>
         </div>
       </div>

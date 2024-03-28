@@ -1,37 +1,37 @@
 // import SearchBar from "@/components/serarchbar";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SetStateAction } from "react";
 
 import Bookmarks from "~components/bookmark/Bookmarks";
 import Middle from "~components/middle/Middle";
+import Setting from "~components/weather_todo/Setting";
 import WeatherCard from "~components/weather_todo/WeatherCard";
-import Settings from "~components/weather_todo/Setting";
+
+import { retrieveData } from "./indexedDb";
 
 const Landing = () => {
-  const [backgroundImage, setBackgroundImage] = useState("");
-
-  const fetchBackgroundImage = async (url: string) => {
-    setBackgroundImage(url);
-  };
+  const [backgroundImage, setBackgroundImage] = useState<string>("");
 
   useEffect(() => {
-    setBackgroundImage(
-      "https://source.unsplash.com/1600x900/?wallpaper,landscape,day"
-    );
+    // retrive data from the indexedDB
+    retrieveData("appData", "backgroundImage", 1)
+      .then((data) => {
+        setBackgroundImage(data.backgroundImage);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log("backgroundImage", backgroundImage);
   }, [backgroundImage]);
 
   return (
     <>
       <main
-        className={cn(
-          "fixed w-full h-full bg-cover",
-          // "bg-transparent",
-          // "bg-coolImage",
-          //   "bg-random",
-          `bg-cover`,
-        )}
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
+        className={cn("fixed w-full h-full bg-cover")}
+        style={{ backgroundImage: `url(${backgroundImage})` }}>
         <div className="flex w-full h-full">
           {/* bookmarks - Raman Sharma*/}
 
@@ -46,7 +46,10 @@ const Landing = () => {
 
           {/* Todo */}
           <div className=" relative md:basis-1/4 h-full p-4">
-            <Settings />
+            <Setting
+              backgroundImage={backgroundImage}
+              setBackgroundImage={setBackgroundImage}
+            />
             <WeatherCard />
           </div>
         </div>

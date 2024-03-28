@@ -1,0 +1,7 @@
+.rotate {
+  transition: transform 0.5s;
+}
+
+.rotate:hover {
+  transform: rotate(30deg);
+}

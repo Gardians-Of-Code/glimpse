@@ -27,11 +27,11 @@
   margin-left: 10px;
   /* color: rgb(0, 0, 0);  */
   /* backdrop-filter: invert(100%); */
-  color: invert(100%);
+  /* color: invert(100%); */
 }
-.bookmark_toggle:hover {
+/* .bookmark_toggle:hover {
   color: rgb(163, 163, 163);
-}
+} */
 
 .bookmark_heading {
   font-family: "Raleway", sans-serif;

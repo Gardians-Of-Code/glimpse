@@ -17,24 +17,7 @@ function IndexPopup() {
         </a>{" "}
         Extension!
       </h2>
-      <Button
-        variant="secondary"
-        onClick={() => {
-          chrome.tabs.create({
-            url: "./tabs/new-tab.html"
-          });
-        }}>
-        open new tab page
-      </Button>
-      <Button
-        variant="secondary"
-        onClick={() => {
-          chrome.tabs.create({
-            url: "./tab"
-          });
-        }}>
-        open tab page
-      </Button>
+      
     </div>
   );
 }
