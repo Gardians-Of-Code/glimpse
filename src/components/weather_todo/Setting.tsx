@@ -38,6 +38,7 @@ const Setting = ({
   };
 
   useEffect(() => {
+    localStorage.setItem("backgroundType", backgroundType);
     if (backgroundType === "random") {
       // check if the random background image is newer than 1 day
       const timeStamp = localStorage.getItem("backgroundTimeStamp");
@@ -109,6 +110,7 @@ const Setting = ({
             className="absolute top-1 right-1 cursor-pointer"
             onClick={() => {
               setDialogueOpen(false);
+              setSettingsDialogOpen(false);
             }}
           />
           <div className="flex flex-col items-center justify-start">

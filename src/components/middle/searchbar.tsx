@@ -5,7 +5,7 @@ import googleLogo from "data-base64:~assets/icons8-google.svg";
 import { Mic } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import "./searchBar.css";
+// import "./searchBar.css";
 
 declare global {
   interface Window {

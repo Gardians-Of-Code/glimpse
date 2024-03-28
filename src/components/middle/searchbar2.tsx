@@ -9,7 +9,6 @@ import yandexLogo from "data-base64:~assets/yandex_icon.svg";
 import { Mic } from "lucide-react";
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
 
-import "./searchBar.css";
 
 import { useOnClickOutside } from "@/components/use-on-click-outside";
 

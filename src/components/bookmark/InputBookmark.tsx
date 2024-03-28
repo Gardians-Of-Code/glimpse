@@ -1,7 +1,12 @@
 import "./Bookmarks.css";
-import {type bkmrk} from "./bookmark";
+
 import { Plus } from "lucide-react";
 
+interface bkmrk {
+  bookmark: string;
+  setBookmark: React.Dispatch<React.SetStateAction<string>>;
+  handleAdd: (e: React.FormEvent) => void;
+}
 function InputBookmark({ bookmark, setBookmark, handleAdd }: bkmrk) {
   return (
     <div className="newBookmark">
