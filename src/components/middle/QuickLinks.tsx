@@ -8,6 +8,7 @@ import {
   TooltipTrigger
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { rejects } from "assert";
 import { Pencil, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -17,6 +18,7 @@ type QuickLinksType = {
   index: number;
   title: string;
   url: string;
+  icon?: string;
 };
 
 const QuickLinks = () => {
@@ -25,12 +27,11 @@ const QuickLinks = () => {
       ? JSON.parse(localStorage.getItem("quickLinks") as string)
       : []
   );
-
-  const handleAddLink = (title: string, url: string) => {
+  const handleAddLink = async (title: string, url: string) => {
     if (title === "") return;
     if (url === "") return;
     if (!url.startsWith("http")) {
-      url = `http://${url}`;
+      url = `https://${url}`;
     }
     const index = quickLinks.length;
     setQuickLinks([...quickLinks, { index, title, url }]);
@@ -41,7 +42,12 @@ const QuickLinks = () => {
     setQuickLinks(
       quickLinks.map((link) => {
         if (link.index === index) {
-          // console.log("edit", index, title, url);
+          if (title === "") return;
+          if (url === "") return;
+          if (!url.startsWith("http")) {
+            url = `https://${url}`;
+          }
+          const index = quickLinks.length;
           return { index, title, url };
         }
         return link;
@@ -66,6 +72,7 @@ const QuickLinks = () => {
           index={index}
           title={link.title}
           url={link.url}
+          // icon={link.icon}
           onRemove={handleRemoveLink}
           onEdit={handleEditLink}
         />
@@ -86,13 +93,37 @@ const LinkBox = ({
   onEdit: (index: number, title: string, url: string) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [icon, setIcon] = useState("");
   const closeDialogue = () => {
     setIsOpen(false);
   };
-  // useEffect(() => {
-  //   // console.log("linkbox");
-  //   console.log(title, url, index);
-  // });
+  const fetchIcon = async () => {
+    try {
+      let res = await fetch(`https://logo.clearbit.com/${url}`);
+      if (!res.ok) {
+        res = await fetch(`https://www.google.com/s2/favicons?domain=${url}`);
+      }
+      const blob = await res.blob();
+      setIcon(URL.createObjectURL(blob));
+      // update the icon in quickLinks which has index
+      const quickLinks = JSON.parse(
+        localStorage.getItem("quickLinks") as string
+      );
+      quickLinks.forEach((link: QuickLinksType) => {
+        if (link.index === index) {
+          link.icon = URL.createObjectURL(blob);
+        }
+      });
+      localStorage.setItem("quickLinks", JSON.stringify(quickLinks));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    if (icon === "") {
+      fetchIcon();
+    }
+  });
   return (
     <>
       <TooltipProvider>
@@ -104,7 +135,11 @@ const LinkBox = ({
                 window.open(url, "_self");
               }}>
               <img
-                src={`https://www.google.com/s2/favicons?domain=${url}`}
+                src={
+                  icon
+                    ? icon
+                    : `https://www.google.com/s2/favicons?domain=${url}`
+                }
                 alt={title}
                 className="w-[35px] mb-1"
               />
