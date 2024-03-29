@@ -13,6 +13,9 @@ import { retrieveData } from "./indexedDb";
 
 const Landing = () => {
   const [backgroundImage, setBackgroundImage] = useState<string>("");
+  const [userName, setUserName] = useState<string>(
+    localStorage.getItem("userName") || ""
+  );
 
   useEffect(() => {
     // retrive data from the indexedDB
@@ -24,6 +27,10 @@ const Landing = () => {
         console.error(error);
       });
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("userName", userName);
+  }, [userName]);
 
   return (
     <>
@@ -39,12 +46,14 @@ const Landing = () => {
 
           {/* middle */}
           <div className="md:basis-2/4 flex-1 w-full h-full p-4">
-            <Middle />
+            <Middle userName={userName} />
           </div>
 
           {/* Todo */}
           <div className=" relative md:basis-1/4 h-full p-4">
             <Setting
+              userName={userName}
+              setUserName={setUserName}
               backgroundImage={backgroundImage}
               setBackgroundImage={setBackgroundImage}
             />

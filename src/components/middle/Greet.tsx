@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 
-const Greet = () => {
+const Greet = ({ userName }: { userName: string }) => {
   const [greetingMode, setGreetingMode] = useState(
-    localStorage.getItem("greetingMode") || "automatic",
-  );
-  const [userName, setUserName] = useState<string>(
-    localStorage.getItem("userName") || "",
+    localStorage.getItem("greetingMode") || "automatic"
   );
   const [currentGreeting, setCurrentGreeting] = useState<string>();
 
@@ -18,7 +15,7 @@ const Greet = () => {
         setCurrentGreeting("Good Morning" + (userName ? `, ${userName}` : ""));
       } else if (time < 18) {
         setCurrentGreeting(
-          "Good Afternoon" + (userName ? `, ${userName}` : ""),
+          "Good Afternoon" + (userName ? `, ${userName}` : "")
         );
       } else {
         setCurrentGreeting("Good Evening" + (userName ? `, ${userName}` : ""));

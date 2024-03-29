@@ -15,7 +15,7 @@ import Greet from "./Greet";
 
 // const QuickLinks = lazy(() => import("@/components/middle/QuickLinks"));
 
-const Middle = () => {
+const Middle = ({ userName }: { userName: string }) => {
   const [quote, setQuote] = useState("");
   useEffect(() => {
     fetchQuote();
@@ -38,7 +38,7 @@ const Middle = () => {
           {/* greeting and time */}
           <div className="basis-[70%] w-full flex flex-col items-center justify-center">
             <DateNTime />
-            <Greet />
+            <Greet userName={userName} />
           </div>
           {/* searchbar */}
           <div className="searchbar">
