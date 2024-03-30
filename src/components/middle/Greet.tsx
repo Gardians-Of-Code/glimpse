@@ -4,7 +4,7 @@ const Greet = ({ userName }: { userName: string }) => {
   const [greetingMode, setGreetingMode] = useState(
     localStorage.getItem("greetingMode") || "automatic"
   );
-  const [currentGreeting, setCurrentGreeting] = useState<string>();
+  const [currentGreeting, setCurrentGreeting] = useState<string>("");
 
   useEffect(() => {
     localStorage.setItem("greetingMode", greetingMode);

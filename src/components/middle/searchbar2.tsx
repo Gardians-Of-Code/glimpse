@@ -4,11 +4,11 @@ import bingLogo from "data-base64:~assets/bing_icon.svg";
 import duckduckgoLogo from "data-base64:~assets/duckduckgo_icon.svg";
 import googleLogo from "data-base64:~assets/google_icon.svg";
 import googleVoice from "data-base64:~assets/google-voice.png";
+import listeningSVG from "data-base64:~assets/listening.svg";
 import yahooLogo from "data-base64:~assets/yahoo_icon.svg";
 import yandexLogo from "data-base64:~assets/yandex_icon.svg";
 import { Mic } from "lucide-react";
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
-
 
 import { useOnClickOutside } from "@/components/use-on-click-outside";
 
@@ -69,10 +69,11 @@ const SearchBar = () => {
   const [searchSelectorOpen, setSearchSelectorOpen] = useState(false);
   const [finalSearchQuery, setFinalSearchQuery] = useState("");
   const [query, setQuery] = useState("");
-  const [isListening, setIsListening] = useState(false);
-  const [voiceSearch, setVoiceSearch] = useState(false);
+  const [isListening, setIsListening] = useState<boolean>(false);
+  const [voiceSearch, setVoiceSearch] = useState<boolean>(false);
 
-  let recognition: SpeechRecognition;
+  let ignore_onend = false;
+  const recognition = useRef<SpeechRecognition | null>(null);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const searchEngineSelectorRef = useRef<HTMLDivElement | null>(null);
@@ -84,8 +85,8 @@ const SearchBar = () => {
   useEffect(() => {
     const stopVoiceSearch = () => {
       if (voiceSearch) {
-        if (recognition) {
-          recognition.stop();
+        if (recognition.current) {
+          recognition.current.stop();
           setIsListening(false);
           setVoiceSearch(false);
         }
@@ -99,28 +100,45 @@ const SearchBar = () => {
     };
   }, [voiceSearch]);
 
+  useEffect(() => {
+    if ("SpeechRecognition" in window) {
+      console.log("SpeechRecognition");
+      recognition.current = new window.SpeechRecognition();
+    } else if ("webkitSpeechRecognition" in window) {
+      recognition.current = new (window as any).webkitSpeechRecognition();
+    } else {
+      console.log("Speech recognition is not supported by your browser");
+    }
+  }, []);
+
   const handleVoiceSearch = () => {
-    if (!("webkitSpeechRecognition" in window)) {
-      alert(
-        "Your browser does not support speech recognition. Try the latest version of Chrome."
-      );
-      setIsListening(false);
+    // if (!("webkitSpeechRecognition" in window)) {
+    //   alert(
+    //     "Your browser does not support speech recognition. Try the latest version of Chrome."
+    //   );
+    //   setIsListening(false);
+    //   return;
+    // }
+
+    if (!recognition.current) {
+      console.error("Speech recognition is not supported by your browser");
       return;
     }
 
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = true;
+    // const SpeechRecognition =
+    //   window.SpeechRecognition || window.webkitSpeechRecognition;
+    // recognition.current = new SpeechRecognition();
+    recognition.current.continuous = false;
+    recognition.current.interimResults = true;
 
-    recognition.onstart = () => {
+    recognition.current.onstart = () => {
+      console.log("onstart")
       setFinalSearchQuery("");
       setVoiceSearch(true);
       setIsListening(true);
     };
 
-    recognition.onresult = (event) => {
+    recognition.current.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setQuery(transcript);
       if (event.results[0].isFinal) {
@@ -128,18 +146,34 @@ const SearchBar = () => {
       }
     };
 
-    recognition.onerror = (event) => {
+    recognition.current.onerror = (event) => {
+      console.log("onerror")
+      ignore_onend = true;
       console.error(event.error);
+
       setVoiceSearch(false);
       setIsListening(false);
     };
 
-    recognition.onend = () => {
+    recognition.current.onend = (event) => {
+      
       setIsListening(false);
+      if (ignore_onend) {
+        // showInfo("info_no_speech");
+        console.log("onend");
+        return;
+      }
     };
 
-    recognition.start();
+    
+
+    ignore_onend = false;
+    recognition.current.start();
   };
+
+  useEffect(() => {
+    console.log("isListening", isListening);
+  }, [isListening]);
 
   const searchHandler = (txt: string, engine: string) => {
     const searchUrl = searchEngines.get(engine)?.url;
@@ -185,9 +219,6 @@ const SearchBar = () => {
 
   return (
     <>
-      <div className="w-full h-3 mb-3 text-center">
-        {isListening ? "Listening..." : ""}
-      </div>
       <div
         id="searchBox"
         className="w-full h-full px-4 flex items-center justify-center rounded-full">
@@ -247,14 +278,19 @@ const SearchBar = () => {
           />
           {searchEngines.get(searchEngine)?.micIcon !== undefined ? (
             <img
-              src={searchEngines.get(searchEngine)?.micIcon}
+              src={
+                isListening
+                  ? listeningSVG
+                  : searchEngines.get(searchEngine)?.micIcon
+              }
               alt={searchEngines.get(searchEngine)?.name}
               className={cn(
                 "h-[30px] mx-2 cursor-pointer rounded-full hover:rounded-full"
               )}
               onClick={() => {
+                console.log("isListening", isListening);
                 if (isListening) {
-                  recognition.stop();
+                  recognition.current.stop();
                   setIsListening(false);
                 } else {
                   handleVoiceSearch();
@@ -262,19 +298,41 @@ const SearchBar = () => {
               }}
             />
           ) : (
-            <Mic
-              className={cn(
-                "h-[30px] mx-2 cursor-pointer rounded-full hover:rounded-full"
+            <>
+              {isListening ? (
+                <img
+                  src={listeningSVG}
+                  alt={searchEngines.get(searchEngine)?.name}
+                  className={cn(
+                    "h-[30px] mx-2 cursor-pointer rounded-full hover:rounded-full"
+                  )}
+                  onClick={() => {
+                    console.log("isListening", isListening);
+                    if (isListening) {
+                      recognition.current.stop();
+                      setIsListening(false);
+                    } else {
+                      handleVoiceSearch();
+                    }
+                  }}
+                />
+              ) : (
+                <Mic
+                  className={cn(
+                    "h-[30px] mx-2 cursor-pointer rounded-full hover:rounded-full"
+                  )}
+                  onClick={() => {
+                    console.log("isListening", isListening);
+                    if (isListening) {
+                      recognition.current.stop();
+                      setIsListening(false);
+                    } else {
+                      handleVoiceSearch();
+                    }
+                  }}
+                />
               )}
-              onClick={() => {
-                if (isListening) {
-                  recognition.stop();
-                  setIsListening(false);
-                } else {
-                  handleVoiceSearch();
-                }
-              }}
-            />
+            </>
           )}
         </span>
       </div>

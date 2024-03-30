@@ -62,7 +62,6 @@
           "<all_urls>"
         ],
         "resources": [
-          "tabs/new-tab.html"
         ]
       }
     ]

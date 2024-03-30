@@ -88,6 +88,7 @@ const Setting = ({
           (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
         );
       setBgTags([...bgTags, ...newTags]);
+      localStorage.setItem("bgTags", JSON.stringify([...bgTags, ...newTags]));
       setInputValue("");
       localStorage.setItem("backgroundTimeStamp", "0");
     }
@@ -125,6 +126,7 @@ const Setting = ({
     } else if (backgroundType === "custom") {
       // console.log("custom", bgUrl);
     } else if (backgroundType === "tags") {
+      localStorage.setItem("bgTags", JSON.stringify(bgTags));
       const timeStamp = localStorage.getItem("backgroundTimeStamp");
       if (timeStamp) {
         const currentTime = Date.now();
@@ -148,16 +150,6 @@ const Setting = ({
       console.log(api.selectedScrollSnap() + 1);
     });
   }, [api]);
-
-  useEffect(() => {
-    // console.log("bgTags", bgTags);
-    localStorage.setItem("backgroundTimeStamp", "0");
-    localStorage.setItem("bgTags", JSON.stringify(bgTags));
-  }, [bgTags]);
-
-  useEffect(() => {
-    // console.log("backgroundType", backgroundType);
-  }, [backgroundImage, backgroundType]);
 
   return (
     <>
@@ -313,6 +305,7 @@ const Setting = ({
                         <X
                           className="cursor-pointer h-[14px] w-[14px] text-accent-background hover:text-red-400 "
                           onClick={() => {
+                            localStorage.setItem("backgroundTimeStamp", "0");
                             setBgTags(bgTags.filter((t) => t !== tag));
                           }}
                         />
@@ -334,17 +327,22 @@ const Setting = ({
                   })}
                   disabled={loading}
                   onClick={() => {
-                    localStorage.setItem("backgroundTimeStamp", "0");
                     fetchImage(
                       `https://source.unsplash.com/${screenSize.windowWidth}x${screenSize.windowHeight}/?${bgTags}`
                     );
                   }}>
                   {loading ? (
-                    <img src={loadingSVG} alt="loading" className="h-[30px]" />
+                    <>
+                      <img
+                        src={loadingSVG}
+                        alt="loading"
+                        className="h-[30px]"
+                      />
+                      Updating background
+                    </>
                   ) : (
-                    <></>
+                    <>Update background</>
                   )}
-                  Update Image
                 </Button>
               </div>
 
@@ -385,13 +383,18 @@ const Setting = ({
                 {/* Drop image */}
                 <div className="w-full p-1">
                   <Dropzone
+                    maxFiles={1}
+                    multiple={false}
+                    accept={{
+                      "image/*": [".png", ".webp" , ".jpeg", ".jpg"]
+                    }}
                     onDrop={(acceptedFiles) => {
                       // if the given file is not an image
-                      console.log(acceptedFiles[0].type);
-                      if (!acceptedFiles[0].type.includes("image")) {
-                        console.log("not an image");
-                        return;
-                      }
+                      // console.log(acceptedFiles[0].type);
+                      // if (!acceptedFiles[0].type.includes("image")) {
+                      //   console.log("not an image");
+                      //   return;
+                      // }
                       // create a FileReader instance
                       const reader = new FileReader();
 
@@ -417,7 +420,7 @@ const Setting = ({
                             "w-full h-full rounded-3xl border-[2px] border-dashed flex items-center justify-center text-center"
                           }>
                           <input {...getInputProps()} />
-                          <p className="text-wrap text-sm">
+                          <p className="text-wrap text-sm cursor-default">
                             Drag 'n' drop image here, or click to select files
                           </p>
                         </div>
