@@ -44,7 +44,7 @@ const Setting = ({
   const [api, setApi] = useState<CarouselApi>();
   const [settingsDialogOpen, setSettingsDialogOpen] = useState<boolean>(false);
   const [backgroundType, setBackgroundType] = useState<string>(
-    localStorage.getItem("backgroundType") || "random"
+    localStorage.getItem("backgroundType") || "tags"
   );
   const [bgUrl, setBgUrl] = useState<string>(
     localStorage.getItem("bgUrl") || ""
@@ -154,7 +154,7 @@ const Setting = ({
   return (
     <>
       {/* Settings icon */}
-      <div className={cn("fixed bottom-4 right-2 w-12")}>
+      <div className={cn("fixed bottom-4 right-2 w-12 z-[500]")}>
         <Settings
           className={cn(
             "h-full rotate  cursor-pointer",
@@ -170,7 +170,7 @@ const Setting = ({
       <div
         ref={ref}
         className={cn(
-          "fixed bottom-4 right-4 w-[600px] h-max py-4 px-5 m-4 rounded-md flex gap-4 flex-col items-center justify-center bg-black",
+          "fixed bottom-4 right-4 z-[500] w-[600px] h-max py-4 px-5 m-4 rounded-md flex gap-4 flex-col items-center justify-center bg-black/70",
           settingsDialogOpen ? "" : "hidden"
         )}>
         {/* Settings header */}
@@ -386,7 +386,7 @@ const Setting = ({
                     maxFiles={1}
                     multiple={false}
                     accept={{
-                      "image/*": [".png", ".webp" , ".jpeg", ".jpg"]
+                      "image/*": [".png", ".webp", ".jpeg", ".jpg"]
                     }}
                     onDrop={(acceptedFiles) => {
                       // if the given file is not an image
@@ -417,7 +417,7 @@ const Setting = ({
                         <div
                           {...getRootProps()}
                           className={
-                            "w-full h-full rounded-3xl border-[2px] border-dashed flex items-center justify-center text-center"
+                            "w-full h-full rounded-3xl border-[2px] border-dashed bg-slate-600/50 flex items-center justify-center text-center"
                           }>
                           <input {...getInputProps()} />
                           <p className="text-wrap text-sm cursor-default">

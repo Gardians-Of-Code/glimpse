@@ -42,7 +42,7 @@ const Middle = ({ userName }: { userName: string }) => {
           </div>
           {/* searchbar */}
           <div className="searchbar">
-            <div className="w-full h-[45px]">
+            <div className="w-full h-[--searchbarHeight]">
               <SearchBar />
             </div>
           </div>
