@@ -132,7 +132,7 @@ const SearchBar = () => {
     recognition.current.interimResults = true;
 
     recognition.current.onstart = () => {
-      console.log("onstart")
+      console.log("onstart");
       setFinalSearchQuery("");
       setVoiceSearch(true);
       setIsListening(true);
@@ -147,7 +147,7 @@ const SearchBar = () => {
     };
 
     recognition.current.onerror = (event) => {
-      console.log("onerror")
+      console.log("onerror");
       ignore_onend = true;
       console.error(event.error);
 
@@ -156,7 +156,6 @@ const SearchBar = () => {
     };
 
     recognition.current.onend = (event) => {
-      
       setIsListening(false);
       if (ignore_onend) {
         // showInfo("info_no_speech");
@@ -164,8 +163,6 @@ const SearchBar = () => {
         return;
       }
     };
-
-    
 
     ignore_onend = false;
     recognition.current.start();
@@ -245,14 +242,18 @@ const SearchBar = () => {
               className={cn("transition-all ease-in-out duration-500", {
                 "rounded-t-full rounded-b-full bg-white flex flex-col items-center justify-center gap-1":
                   searchSelectorOpen,
-                "hidden h-0": !searchSelectorOpen
+                "h-0": !searchSelectorOpen
               })}>
               {Array.from(searchEngines).map(([key, value]) => (
                 <div
                   key={key}
                   className={cn(
                     "flex items-center justify-between rounded-full cursor-pointer hover:bg-red-300 ",
-                    { "bg-green-400": searchEngine === key }
+                    "transition-all ease-in-out duration-500",
+                    {
+                      "bg-green-400": searchEngine === key && searchSelectorOpen
+                    },
+                    { "h-0": !searchSelectorOpen }
                   )}
                   onClick={() => {
                     setSearchEngine(key);
@@ -261,7 +262,11 @@ const SearchBar = () => {
                   <img
                     src={value.icon}
                     alt={value.name}
-                    className="h-[40px] w-[40px] p-1.5"
+                    className={cn(
+                      "h-[40px] w-[40px] p-1.5",
+                      "transition-all ease-in-out duration-500",
+                      { "h-0": !searchSelectorOpen }
+                    )}
                   />
                 </div>
               ))}
@@ -270,7 +275,7 @@ const SearchBar = () => {
           <input
             ref={inputRef}
             className={cn(
-              "flex-1 h-full overflow-hidden transition-all ease-in-out duration-500  focus:outline-none text-black"
+              "flex-1 h-[--searchbarHeight] text-base overflow-hidden transition-all ease-in-out duration-500  focus:outline-none text-black"
             )}
             value={query}
             placeholder={`Search with ${searchEngines.get(searchEngine)?.name}`}
