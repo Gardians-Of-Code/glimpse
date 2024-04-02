@@ -84,10 +84,11 @@
   background-color: black;
   color: white;
 }
-.bookmark-types:hover {
+
+/* .bookmark-types:hover {
   background-color: rgba(0, 0, 0, 0.194);
   color: white;
-}
+} */
 .bookmark-elements {
   width: 100%;
   padding: 10px 10px;
@@ -156,6 +157,20 @@
 }
 .edit:hover {
   color: white;
+}
+
+.tag{
+  display: flex;
+  align-items: self-start;
+  padding: 2px;
+  margin-left: 8px;
+  color: #bababa;
+  border: solid 1px black;
+  border-radius: 4px;
+  /* padding: 1px; */
+  /* position: absolute; */
+  /* right: 50px; */
+
 }
 
 .newBookmark {
