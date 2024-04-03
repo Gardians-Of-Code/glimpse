@@ -7,6 +7,7 @@
   /* padding: 10px; */
   display: flex;
   flex-direction: column;
+  border: 2px solid rgba(0, 0, 0, 0.274);
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.22);
   /* background-color: linear-gradient(to right, red , yellow); */
@@ -15,7 +16,7 @@
 
 .bookmark-button {
   height: 50px;
-  border-radius: 2px;
+  /* border-radius: 2px; */
   display: flex;
   justify-content: left;
   align-items: center;
@@ -23,12 +24,23 @@
   /* border: solid 2px rgb(255, 255, 255); */
 }
 
-.bookmark_toggle {
+.star {
+  width: 30px;
+  height: 30px;
   margin-left: 10px;
-  /* color: rgb(0, 0, 0);  */
+  color: rgba(0, 0, 0, 0.841);
+  background-color: rgba(255, 255, 255, 0.492);
+  border-radius: 50px;
+  padding: 3px; 
+}
+
+.bookmark_close {
+  margin-left: 10px;
+  /* color: rgb(214, 19, 19);  */
   /* backdrop-filter: invert(100%); */
   /* color: invert(100%); */
 }
+
 /* .bookmark_toggle:hover {
   color: rgb(163, 163, 163);
 } */
@@ -71,17 +83,17 @@
 .bookmark-types {
   font-family: "Raleway", sans-serif;
   font-size: small;
-  color: rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 0.847);
   text-align: center;
   /* margin: 7px 5px; */
   /* padding: 5px 10px; */
-  border: 1px solid rgba(255, 255, 255, 0.688);
+  border: 1px solid rgba(0, 0, 0, 0.244);
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: rgba(0, 0, 0, 0.104);
 }
 
 .bookmark-types-active {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.778);
   color: white;
 }
 
@@ -101,6 +113,7 @@
   margin-bottom: 10px;
   border-radius: 8px;
 }
+
 .bookmark-elements:hover {
   background-color: rgba(0, 0, 0, 0.66);
 }
@@ -125,9 +138,12 @@
   white-space: wrap;
   /* text-wrap: wrap; */
   /* word-wrap: ; */
-  overflow: hidden; /* Hide overflow text */
-  text-overflow: ellipsis; /* Show ellipsis for overflow text */
-  transition: width 0.3s ease; /*Smooth transition for width change */
+  overflow: hidden;
+  /* Hide overflow text */
+  text-overflow: ellipsis;
+  /* Show ellipsis for overflow text */
+  transition: width 0.3s ease;
+  /*Smooth transition for width change */
 }
 
 .each_bookmark_title:hover {
@@ -143,6 +159,7 @@
   /* position: absolute; */
   /* right: 10px; */
 }
+
 .delete:hover {
   color: rgb(255, 0, 0);
 }
@@ -155,22 +172,27 @@
   /* position: absolute; */
   /* right: 50px; */
 }
+
 .edit:hover {
   color: white;
 }
 
-.tag{
+.tag {
+  align-items: center;
+  padding-left: 12px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin-bottom: 5px;
   display: flex;
-  align-items: self-start;
-  padding: 2px;
-  margin-left: 8px;
-  color: #bababa;
+  background-color: #000000b2;
+  color: white;
   border: solid 1px black;
-  border-radius: 4px;
-  /* padding: 1px; */
-  /* position: absolute; */
-  /* right: 50px; */
-
+  border-radius: 10px;
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: small;
 }
 
 .newBookmark {
@@ -183,17 +205,19 @@
   position: absolute;
   left: 13px;
   bottom: 13px;
-  background-color: rgba(255, 255, 255, 0.37);
+  background-color: rgba(0, 0, 0, 0.214);
   border-radius: 8px;
 }
+
 .newBookmark:hover {
-  background-color: rgba(255, 255, 255, 0.19);
+  background-color: rgba(0, 0, 0, 0.114);
 }
 
 .plus {
   margin-left: 13px;
   color: white;
 }
+
 .newBookmark_input {
   width: 100%;
   background-color: transparent;
@@ -204,5 +228,6 @@
 }
 
 .newBookmark_input::placeholder {
-  color: white; /* Set placeholder color to white */
+  color: white;
+  /* Set placeholder color to white */
 }

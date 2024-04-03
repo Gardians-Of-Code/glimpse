@@ -63,7 +63,7 @@ const Bookmark = (
                 />
                 <Trash2
                     className="delete cursor-pointer"
-                    onClick={() => handleDelete(index)}
+                    onClick={() =>{handleDelete(index) } }
                 />
             </div>
         </div>
