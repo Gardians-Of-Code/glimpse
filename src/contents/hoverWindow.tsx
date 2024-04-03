@@ -72,7 +72,7 @@ const HoverWindow = () => {
     checkIfBookmarked(currentHoveredLink)
   );
   const [lock, setLock] = useState<boolean>(false);
-  const [showLanguage, setShowLanguage] = useState<string>("de");
+  const [showLanguage, setShowLanguage] = useState<string>(navigator.language);
   const [languageSelctorOpen, setLanguageSelctorOpen] =
     useState<boolean>(false);
 
@@ -200,12 +200,15 @@ const HoverWindow = () => {
           Estimated Reading Time: <span> {readingTime} </span> minutes
         </div>
         <div className="flex gap-2 items-center justify-center">
+          {/* Language selector */}
           <div className="h-full">
             <Languages />
           </div>
+          {/* summerizer */}
           <div className="h-full">
             <Text className="cursor-pointer" />
           </div>
+          {/* Bookmark */}
           <div className="h-full">
             {isBoockmarked ? (
               <BookmarkCheck
@@ -226,7 +229,15 @@ const HoverWindow = () => {
             )}
             {/* <span>Bookmark</span> */}
           </div>
-          <div className="h-full">
+          {/* close button */}
+          <div
+            className="h-full"
+            onClick={() => {
+              setIsOpen(false);
+              setLockWindow(false);
+              setCurrentHoveredLink("");
+              removeWebPage();
+            }}>
             <X className="cursor-pointer" />
           </div>
         </div>
