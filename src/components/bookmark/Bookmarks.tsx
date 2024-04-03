@@ -311,178 +311,184 @@ function Bookmarks() {
             {/* options of category UI for bookmarks */}
 
             <div className="bookmark-dropdown">
-              {/* bookmark sorter */}
-              <div className="flex items-center justify-start m-2">
+              {/* bookmark showing options */}
+              <div>
+                <div className="flex items-center justify-start m-2">
 
 
 
-                {/* sortBy implementation */}
+                  {/* sortBy implementation */}
 
-                {/* end of sortBy implementation */}
-                <div className="flex gap-2 items-center justify-center">
+                  {/* end of sortBy implementation */}
+                  <div className="flex gap-2 items-center justify-center">
 
-                  <button
-                    className={cn(
-                      "bookmark-types h-full ml-2 py-1 pl-2 rounded-[10px] flex items-center",
-                      { "hover:bg-black/20 hover:text-white": bookmarkCategory !== "sort" },
-                      { "bookmark-types-active": bookmarkCategory === "sort" },
-                    )}
-                    onClick={() => {
-                      setBookmarkCategory("sort");
-                      setLock(true);
-                      // console.log("lock", lock);
-                    }}
-                  >
-                    {sortBy ? (
-                      <span className="w-full flex items-center justify-start">
-                        <Text className="h-8/12 pr-2" />
-                        {"All: "}
-                        {
-                          sortTypes?.find(
-                            (sortType) => sortType.value === sortBy,
-                          )?.name
-                        }
-                      </span>
-                    ) : (
-                      <span className="truncate">Sort by</span>
-                    )}
-                    <Popover open={sorterOpen} onOpenChange={setSorterOpen}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="custom"
-                          size="custom"
-                          role="combobox"
-                          aria-expanded={sorterOpen}
+                    <button
+                      className={cn(
+                        "bookmark-types h-full ml-2 py-1 pl-2 rounded-[10px] flex items-center",
+                        { "hover:bg-black/20 hover:text-white": bookmarkCategory !== "sort" },
+                        { "bookmark-types-active": bookmarkCategory === "sort" },
+                      )}
+                      onClick={() => {
+                        setBookmarkCategory("sort");
+                        setLock(true);
+                        // console.log("lock", lock);
+                      }}
+                    >
+                      {sortBy ? (
+                        <span className="w-full flex items-center justify-start">
+                          <Text className="h-8/12 pr-2" />
+                          {"All: "}
+                          {
+                            sortTypes?.find(
+                              (sortType) => sortType.value === sortBy,
+                            )?.name
+                          }
+                        </span>
+                      ) : (
+                        <span className="truncate">Sort by</span>
+                      )}
+                      <Popover open={sorterOpen} onOpenChange={setSorterOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="custom"
+                            size="custom"
+                            role="combobox"
+                            aria-expanded={sorterOpen}
 
-                        >
+                          >
 
-                          <ChevronsUpDown className="ml-2 h-4 w-4 mr-2 shrink-0 opacity-100" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="ml-5 w-[200px] p-0">
-                        <Command>
-                          <CommandInput placeholder="Select sort type" />
-                          <CommandEmpty>No sorting type found</CommandEmpty>
-                          <CommandGroup>
-                            {sortTypes?.map((sortType) => (
-                              <CommandItem
-                                key={sortType.value}
-                                value={sortType.value}
-                                onSelect={(currentValue) => {
-                                  // setSortBy(
-                                  //   currentValue === sortBy ? "" : currentValue,
-                                  // );
-                                  setSortBy(currentValue);
-                                  localStorage.setItem("sortBy", currentValue);
-                                  // console.log("sortBy", sortBy);
-                                  // console.log("sortType", sortType);
-                                  setSorterOpen(false);
-                                  setLock(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    sortBy === sortType.value
-                                      ? "opacity-100"
-                                      : "opacity-0",
-                                  )}
-                                />
-                                {sortType.name}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </button>
-
-
-                  {/* Custom tags */}
-                  <button
-                    className={cn(
-                      "bookmark-types p-1.5 px-2.5",
-                      { "bookmark-types-active": bookmarkCategory === "custom" },
-                      { "hover:bg-black/20 hover:text-white": bookmarkCategory !== "custom" }
-                    )}
-                    onClick={() => {
-                      setBookmarkCategory("custom");
-                    }}
-                  >
-                    Custom
-                  </button>
+                            <ChevronsUpDown className="ml-2 h-4 w-4 mr-2 shrink-0 opacity-100" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="ml-5 w-[200px] p-0">
+                          <Command>
+                            <CommandInput placeholder="Select sort type" />
+                            <CommandEmpty>No sorting type found</CommandEmpty>
+                            <CommandGroup>
+                              {sortTypes?.map((sortType) => (
+                                <CommandItem
+                                  key={sortType.value}
+                                  value={sortType.value}
+                                  onSelect={(currentValue) => {
+                                    // setSortBy(
+                                    //   currentValue === sortBy ? "" : currentValue,
+                                    // );
+                                    setSortBy(currentValue);
+                                    localStorage.setItem("sortBy", currentValue);
+                                    // console.log("sortBy", sortBy);
+                                    // console.log("sortType", sortType);
+                                    setSorterOpen(false);
+                                    setLock(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      sortBy === sortType.value
+                                        ? "opacity-100"
+                                        : "opacity-0",
+                                    )}
+                                  />
+                                  {sortType.name}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    </button>
 
 
+                    {/* Custom tags */}
+                    <button
+                      className={cn(
+                        "bookmark-types p-1.5 px-2.5",
+                        { "bookmark-types-active": bookmarkCategory === "custom" },
+                        { "hover:bg-black/20 hover:text-white": bookmarkCategory !== "custom" }
+                      )}
+                      onClick={() => {
+                        setBookmarkCategory("custom");
+                      }}
+                    >
+                      Custom
+                    </button>
 
-                  {/* ML tags */}
-                  <button
-                    className={cn(
-                      "bookmark-types mr-2 p-1.5 px-2.5",
-                      { "bookmark-types-active": bookmarkCategory === "ml" },
-                      { "hover:bg-black/20 hover:text-white": bookmarkCategory !== "ml" }
-                    )}
-                    onClick={() => {
-                      setBookmarkCategory("ml");
-                    }}
-                  >
-                    Auto
-                  </button>
+
+
+                    {/* ML tags */}
+                    <button
+                      className={cn(
+                        "bookmark-types mr-2 p-1.5 px-2.5",
+                        { "bookmark-types-active": bookmarkCategory === "ml" },
+                        { "hover:bg-black/20 hover:text-white": bookmarkCategory !== "ml" }
+                      )}
+                      onClick={() => {
+                        setBookmarkCategory("ml");
+                      }}
+                    >
+                      Auto
+                    </button>
+                  </div>
                 </div>
+
+                <div className="w-[calc(100%-10px)] h-[1.5px] bg-black/50 mb-2 ml-[5px] rounded-full "></div>
               </div>
 
-              <div className="w-[calc(100%-10px)] h-[1.5px] bg-black/50 mb-2 ml-[5px] rounded-full "></div>
 
-              {bookmarkCategory === "sort" && (
-                <div className="flex flex-col justify-start px-4">
-                  {bookmarks?.map((bookmark, index) => (
-                    <Bookmark
-                      key={index}
-                      bookmark={bookmark}
-                      index={index}
-                      handleBookmarkClick={handleBookmarkClick}
-                      handleModify={handleModify}
-                      handleDelete={handleDelete}
-                    />
-                  ))}
-                </div>
-              )}
+              <div className="bookmark-showing">
 
-              {bookmarkCategory === "custom" && (
-                <div className="flex flex-col justify-start px-4">
-                  {customTags.map((currentTag, index) => (
-                    <div key={index} className="h-max ">
+                {bookmarkCategory === "sort" && (
+                  <div className="flex flex-col justify-start px-4">
+                    {bookmarks?.map((bookmark, index) => (
+                      <Bookmark
+                        key={index}
+                        bookmark={bookmark}
+                        index={index}
+                        handleBookmarkClick={handleBookmarkClick}
+                        handleModify={handleModify}
+                        handleDelete={handleDelete}
+                      />
+                    ))}
+                  </div>
+                )}
 
-                      <span className="tag" onClick={function () {
-                        currentTag.show = !currentTag.show;
-                        setCustomTags([...customTags]);
-                        // console.log("customTags", customTags);
-                      }} >{currentTag.tagname}
-                        {currentTag.show ? <ChevronDown className="w-5 opacity-10 ml-1" /> : <ChevronRight className="w-5 opacity-10 ml-1" />}
-                      </span>
+                {bookmarkCategory === "custom" && (
+                  <div className="flex flex-col justify-start px-4">
+                    {customTags.map((currentTag, index) => (
+                      <div key={index} className="h-max ">
 
-                      {currentTag.show && (
-                        bookmarks
-                          .filter(bookmark => {
-                            // console.log("bookmark", bookmark);
-                            if (bookmark.tags.includes(currentTag.tagname)) {
+                        <span className="tag" onClick={function () {
+                          currentTag.show = !currentTag.show;
+                          setCustomTags([...customTags]);
+                          // console.log("customTags", customTags);
+                        }} >{currentTag.tagname}
+                          {currentTag.show ? <ChevronDown className="w-5 opacity-[5] ml-1" /> : <ChevronRight className="w-5 opacity-[5] ml-1" />}
+                        </span>
+
+                        {currentTag.show && (
+                          bookmarks
+                            .filter(bookmark => {
                               // console.log("bookmark", bookmark);
-                              return bookmark;
-                            }
-                          })
-                          .map((bookmark, index) => (
-                            <Bookmark
-                              key={index}
-                              bookmark={bookmark}
-                              index={index}
-                              handleBookmarkClick={handleBookmarkClick}
-                              handleModify={handleModify}
-                              handleDelete={handleDelete}
-                            />
-                          )))}
-                    </div>
-                  ))}
-                </div>
-              )}
+                              if (bookmark.tags.includes(currentTag.tagname)) {
+                                // console.log("bookmark", bookmark);
+                                return bookmark;
+                              }
+                            })
+                            .map((bookmark, index) => (
+                              <Bookmark
+                                key={index}
+                                bookmark={bookmark}
+                                index={index}
+                                handleBookmarkClick={handleBookmarkClick}
+                                handleModify={handleModify}
+                                handleDelete={handleDelete}
+                              />
+                            )))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
 
 

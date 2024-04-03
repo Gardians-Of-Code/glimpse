@@ -23,7 +23,7 @@ const Bookmark = (
                 onClick={() => handleBookmarkClick(index)}
             />
             <span
-                className="each_bookmark_title cursor-pointer "
+                className="each_bookmark_title cursor-pointer"
                 onClick={() => handleBookmarkClick(index)}
             >
                 <TooltipProvider>
@@ -39,7 +39,7 @@ const Bookmark = (
                             </span>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <div className="flex flex-col text-center max-w-md overflow-hidden">
+                            <div className="flex flex-col text-left max-w-md overflow-hidden">
                                 <span className="text-xs">{bookmark.title}</span>
                                 <span className="text-xs truncate">
                                     {bookmark.url}
