@@ -173,6 +173,7 @@ const SearchBar = () => {
   }, [isListening]);
 
   const searchHandler = (txt: string, engine: string) => {
+    if(txt === "") return;
     const searchUrl = searchEngines.get(engine)?.url;
     if (searchUrl) {
       window.open(searchUrl + txt, "_self");
