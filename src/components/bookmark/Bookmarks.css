@@ -69,6 +69,7 @@
   position: relative;
   height: 100%;
   overflow: hidden;
+  scroll-behavior: auto;
 }
 
 .types {
@@ -101,16 +102,41 @@
   background-color: rgba(0, 0, 0, 0.194);
   color: white;
 } */
+
+/*This is for scroll if content overfloew*/
+.bookmark-showing {
+  height: 81%;
+  overflow-y: auto; /* Use 'auto' to show scrollbar only when needed */
+  overflow-x: hidden;
+  scroll-behavior: smooth; /* Enable smooth scrolling behavior */
+}
+
+/* Thin scrollbar style */
+.bookmark-showing::-webkit-scrollbar {
+  width: 4px; /* Set the width of the scrollbar */
+}
+
+.bookmark-showing::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Round the corners of the scrollbar thumb */
+}
+
+.bookmark-showing::-webkit-scrollbar-track {
+  background: transparent; /* Set the background color of the scrollbar track */
+}
+
+
 .bookmark-elements {
   width: 100%;
-  padding: 10px 10px;
+  height: 35px;
+  padding: 10px 7px 10px 10px;
   /* margin: 5px 5px; */
   display: flex;
   align-items: center;
   /* justify-items: stretch; */
   justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.43);
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   border-radius: 8px;
 }
 
@@ -120,7 +146,7 @@
 
 .each_bookmark_img {
   height: 100%;
-  width: 25px;
+  /* width: 10px; */
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -131,7 +157,7 @@
   /* flex-grow: 0; */
   width: 200px;
   font-family: "Raleway", sans-serif;
-  font-size: large;
+  font-size:larger;
   font-weight: 300;
   color: white;
   /* padding-left: 10px; */
@@ -153,8 +179,8 @@
 }
 
 .delete {
-  padding: 1px;
-  margin-left: 10px;
+  padding: 3px;
+  margin-left: 5px;
   color: #ec7474;
   /* position: absolute; */
   /* right: 10px; */
@@ -165,8 +191,8 @@
 }
 
 .edit {
-  padding: 2px;
-  margin-left: 8px;
+  padding: 3px;
+  margin-left: 4px;
   color: #bababa;
   /* padding: 1px; */
   /* position: absolute; */
@@ -196,15 +222,15 @@
 }
 
 .newBookmark {
-  width: calc(100% - 26px);
+  width: calc(100% - 20px);
   /* width: 100%; */
-  height: 50px;
+  height: 40px;
   /* margin-left: 2px; */
   display: flex;
   align-items: center;
   position: absolute;
-  left: 13px;
-  bottom: 13px;
+  left: 10px;
+  bottom: 10px;
   background-color: rgba(0, 0, 0, 0.214);
   border-radius: 8px;
 }
@@ -223,6 +249,7 @@
   background-color: transparent;
   color: white;
   padding: 8px;
+  font-size: medium;
   padding-left: 10px;
   transition: background-color 0.3s ease;
 }
