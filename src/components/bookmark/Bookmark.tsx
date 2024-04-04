@@ -10,9 +10,9 @@ const Bookmark = (
         {
             bookmark: BookmarkType;
             index: number;
-            handleBookmarkClick: (index: number) => void;
-            handleModify: (index: number, title: string, newurl: string, tags: string) => void;
-            handleDelete: (index: number) => void;
+            handleBookmarkClick: (url: string) => void;
+            handleModify: (title: string, newurl: string, tags: string) => void;
+            handleDelete: (url: string) => void;
         }) => {
     return (
         <div key={index} className="bookmark-elements">
@@ -20,11 +20,11 @@ const Bookmark = (
                 className="each_bookmark_img cursor-pointer"
                 src={`https://www.google.com/s2/favicons?domain=${bookmark.url}`}
                 alt="favicon"
-                onClick={() => handleBookmarkClick(index)}
+                onClick={() => handleBookmarkClick(bookmark.url)}
             />
             <span
                 className="each_bookmark_title cursor-pointer"
-                onClick={() => handleBookmarkClick(index)}
+                onClick={() => handleBookmarkClick(bookmark.url)}
             >
                 <TooltipProvider>
                     <Tooltip>
@@ -57,13 +57,13 @@ const Bookmark = (
                         const newTitle = prompt("Enter new Title:", bookmark.title);
                         const newTags = prompt("Enter space-separated tags:", bookmark.tags.join(" "));
                         if (newUrl !== null && newTitle !== null && newTags !== null) {
-                            handleModify(index, newTitle, newUrl, newTags);
+                            handleModify(newTitle, newUrl, newTags);
                         }
                     }}
                 />
                 <Trash2
                     className="delete cursor-pointer"
-                    onClick={() =>{handleDelete(index) } }
+                    onClick={() =>{handleDelete(bookmark.url) } }
                 />
             </div>
         </div>
