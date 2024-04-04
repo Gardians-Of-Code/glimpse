@@ -29,6 +29,7 @@ type customTagType = {
 function Bookmarks() {
   const [bookmarkCategory, setBookmarkCategory] = useState<string>("closed");
   const [currUrl, setCurrUrl] = useState<string>("");
+  const [tags, setTags] = useState<string>("");
   const [bookmarks, setBookmarks] = useState<BookmarkType[]>(
     JSON.parse(localStorage.getItem("bookmarks") as string) || [],
   );
@@ -87,15 +88,17 @@ function Bookmarks() {
     }
     setBookmarks(sortedBookmarks);
   }, [sortBy])
-
+  
+  //any changes in customTags or bookmarks will trigger this useEffect
   useEffect(() => {
-    // console.log("customTags 1", customTags);
-    // console.log("bookmarks 1", bookmarks);
     // Filter out tags with count === 0
     const filteredCustomTags = customTags.filter(tag => tag.count > 0);
     setCustomTags(filteredCustomTags);
+
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
     localStorage.setItem("customTags", JSON.stringify(customTags));
+
+    //no need to call LocalStorage.setItem in handleAdd, handleDelete, handleModify as it is already being called here
   }, [customTags, bookmarks])
 
   // Load bookmarks from localStorage when component mounts
@@ -112,6 +115,7 @@ function Bookmarks() {
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+    // console.log("tags", tags);
     if (currUrl) {
       // get title from url
       const response = await fetch("http://localhost:3000/api/v1/urldata", {
@@ -121,100 +125,68 @@ function Bookmarks() {
         },
         body: JSON.stringify({ url: currUrl }),
       });
+
       const data = await response.json();
       // console.log("data", data);
+      //if bookmark already exists, do not add, show message that already exists
+      if (bookmarks.some(bookmark => bookmark.url === data.url)) {
+        alert("Bookmark already exists");
+        //clear input fields
+        setCurrUrl("");
+        setTags("");
+        return;
+      }
+      //else add the bookmark
       const title = await data.title;
       const url = await data.url;
+      const tagsToAdd = tags.split(" ").filter(tag => tag.trim() !== ""); // Parse entered tags
+      //remove repeated elmenrts from tagsToAdd
+      const uniqueTagsArray = tagsToAdd.filter((item, index) => tagsToAdd.indexOf(item) === index);
+      // console.log("tagsToAdd", tagsToAdd);
       const newBookmark = {
         title: title,
         url: url,
         addedAt: Date.now(),
         count: 0,
-        tags: [], // Initialize tags array
+        tags: uniqueTagsArray , // Initialize tags array
       };
+      console.log("newBookmark", newBookmark);
+      updateTags("", tags); // Update custom tags
 
       // Update state using the callback form of setState to ensure localStorage is updated with the latest state
       setBookmarks((prevBookmarks) => {
-        const updatedBookmarks = [...prevBookmarks, newBookmark];
+        const updatedBookmarks = [...prevBookmarks, { ...newBookmark, tags: uniqueTagsArray }];
         localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks)); // Update localStorage
         return updatedBookmarks;
       });
 
       setCurrUrl("");
+      setTags("");
     }
   };
 
-
-  const handleDelete = (index: number) => {
+  const handleDelete = (url: string) => {
+    const index = bookmarks.findIndex(bookmark => bookmark.url === url);
     const deletedBookmark = bookmarks[index];
     const newBookmarks = [...bookmarks];
 
-    newBookmarks.splice(index, 1);
+    newBookmarks.splice(index, 1); // Remove bookmark from array
 
-    // Reduce count of tags in customTags for the deleted bookmark
-    const updatedCustomTags: customTagType[] = customTags.map(tag => {
-      if (deletedBookmark.tags.includes(tag.tagname)) {
-        return {
-          ...tag,
-          count: tag.count - 1,
-        };
-      }
-      return tag;
-    });
-
-
+    updateTags(deletedBookmark.tags.join(" "), ""); // Update custom tags
 
     setBookmarks(newBookmarks);
-    setCustomTags(updatedCustomTags);
-    // localStorage.setItem("bookmarks", JSON.stringify(newBookmarks));
 
   };
 
-  const handleModify = (index: number, newTitle: string, newUrl: string, newTags: string) => {
-    const newBookmarks = [...bookmarks];
-    const oldTagsArray = newBookmarks[index].tags;
-    const newTagsArray = newTags.split(" ").filter(tag => tag.trim() !== ""); // Parse entered tags
-
+  const updateTags = (oldtags: string, newtags: string) => {
+    const oldTagsArray = oldtags.split(" ").filter(tag => tag.trim() !== ""); // Parse existing tags
+    const newTagsArray = newtags.split(" ").filter(tag => tag.trim() !== ""); // Parse entered tags
+    //remove repeated tags from newTagsArray
+    const uniqueTagsArray = newTagsArray.filter((item, index) => newTagsArray.indexOf(item) === index);
     // Determine tags that were added, removed, or retained
-    const tagsAdded = newTagsArray.filter(tag => !oldTagsArray.includes(tag));
-    const tagsRemoved = oldTagsArray.filter(tag => !newTagsArray.includes(tag));
-    const tagsRetained = newTagsArray.filter(tag => oldTagsArray.includes(tag));
-
-    // Update bookmark
-    newBookmarks[index].url = newUrl;
-    newBookmarks[index].title = newTitle;
-    newBookmarks[index].tags = newTagsArray;
-    console.log("tagsAdded", tagsAdded);
-    console.log("tagsRemoved", tagsRemoved);
-
-    // // Update custom tags
-    // const updatedCustomTags: customTagType[] = customTags.map(tag => {
-    //     if (tagsRemoved.includes(tag.tagname)) {
-    //       // console.log("tagsRemoved", tagsRemoved);
-    //         // Decrement count if tag is removed
-    //         return {
-    //             ...tag,
-    //             count: tag.count - 1,
-    //         };
-    //     } 
-    //     else if (tagsAdded.includes(tag.tagname)) {
-    //       // console.log("tagsAdded", tagsAdded);
-    //         // Increment count if tag is added
-    //         return {
-    //             ...tag,
-    //             count: tag.count + 1,
-    //         };
-    //     }
-    //   else if (tagsRetained.includes(tag.tagname)) {
-    //     console.log("tagsRetained", tagsRetained);
-    //     // Retain count for existing tags that were not removed or added
-    //     return {
-    //         ...tag,
-    //         count: tag.count,
-    //     };
-    // }
-    //   return tag; // Retain count for existing tags
-    // });
+    const tagsAdded = uniqueTagsArray.filter(tag => !oldTagsArray.includes(tag));
+    const tagsRemoved = oldTagsArray.filter(tag => !uniqueTagsArray.includes(tag));
+    const tagsRetained = uniqueTagsArray.filter(tag => oldTagsArray.includes(tag));
 
     // Update custom tags
     const updatedCustomTags: customTagType[] = [];
@@ -254,13 +226,40 @@ function Bookmarks() {
     updatedCustomTags.sort((a, b) => a.tagname.localeCompare(b.tagname));
 
     setCustomTags(updatedCustomTags);
+    // return newTagsArray;
+  }
+
+  const handleModify = (newTitle: string, newUrl: string, newTags: string) => {
+    let index:number;
+    if(bookmarks.some(bookmark => bookmark.url === newUrl)) {
+      index= bookmarks.findIndex(bookmark => bookmark.url === newUrl);
+    }
+    else{
+      // to write code to handle this case if url changes
+      return;
+    }
+
+    const newBookmarks = [...bookmarks];
+    const oldTagsArray = newBookmarks[index].tags;
+    const newTagsArray = newTags.split(" ").filter(tag => tag.trim() !== ""); // Parse entered tags
+    //remove repeated tags from newTagsArray
+    const uniqueTagsArray = newTagsArray.filter((item, index) => newTagsArray.indexOf(item) === index);
+
+    //update tags
+    updateTags(oldTagsArray.join(" "), newTags);
+
+    // Update bookmark
+    newBookmarks[index].url = newUrl;
+    newBookmarks[index].title = newTitle;
+    newBookmarks[index].tags = uniqueTagsArray;
+    // console.log("newBookmarks", newBookmarks);
     setBookmarks(newBookmarks);
   };
 
-
-
-  const handleBookmarkClick = (index: number) => {
+  const handleBookmarkClick = (url: string) => {
     const newBookmarks = [...bookmarks];
+    //get index of bookmark with this url
+    const index = newBookmarks.findIndex(bookmark => bookmark.url === url);
     newBookmarks[index].count++; // Increment count when bookmark is clicked
     setBookmarks(newBookmarks);
     window.open(newBookmarks[index].url, "_self");
@@ -491,11 +490,11 @@ function Bookmarks() {
               </div>
 
 
-
-
               <InputBookmark
                 bookmark={currUrl}
                 setBookmark={setCurrUrl}
+                tags={tags}
+                setTags={setTags}
                 handleAdd={handleAdd}
               />
             </div>
