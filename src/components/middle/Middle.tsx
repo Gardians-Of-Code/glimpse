@@ -18,7 +18,7 @@ import Greet from "./Greet";
 const Middle = ({ userName }: { userName: string }) => {
   const [quote, setQuote] = useState("");
   useEffect(() => {
-    fetchQuote();
+    // fetchQuote();
   }, []);
 
   const fetchQuote = async () => {

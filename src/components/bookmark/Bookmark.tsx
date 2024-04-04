@@ -15,7 +15,7 @@ const Bookmark = (
             handleDelete: (url: string) => void;
         }) => {
     return (
-        <div key={index} className="bookmark-elements">
+        <div key={index} className="bookmark-elements hover:scale-[1.02] transition-all duration-100 ease-out">
             <img
                 className="each_bookmark_img cursor-pointer"
                 src={`https://www.google.com/s2/favicons?domain=${bookmark.url}`}
