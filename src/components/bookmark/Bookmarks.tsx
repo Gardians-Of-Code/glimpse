@@ -93,10 +93,10 @@ function Bookmarks() {
   useEffect(() => {
     // Filter out tags with count === 0
     const filteredCustomTags = customTags.filter(tag => tag.count > 0);
-    setCustomTags(filteredCustomTags);
+    // setCustomTags(filteredCustomTags);
 
-    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-    localStorage.setItem("customTags", JSON.stringify(customTags));
+    // localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+    // localStorage.setItem("customTags", JSON.stringify(customTags));
 
     //no need to call LocalStorage.setItem in handleAdd, handleDelete, handleModify as it is already being called here
   }, [customTags, bookmarks])

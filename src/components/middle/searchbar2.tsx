@@ -169,7 +169,7 @@ const SearchBar = () => {
   };
 
   useEffect(() => {
-    console.log("isListening", isListening);
+    // console.log("isListening", isListening);
   }, [isListening]);
 
   const searchHandler = (txt: string, engine: string) => {
@@ -294,7 +294,7 @@ const SearchBar = () => {
                 "h-[30px] mx-2 cursor-pointer rounded-full hover:rounded-full"
               )}
               onClick={() => {
-                console.log("isListening", isListening);
+                // console.log("isListening", isListening);
                 if (isListening) {
                   recognition.current.stop();
                   setIsListening(false);
@@ -313,7 +313,7 @@ const SearchBar = () => {
                     "h-[30px] mx-2 cursor-pointer rounded-full hover:rounded-full"
                   )}
                   onClick={() => {
-                    console.log("isListening", isListening);
+                    // console.log("isListening", isListening);
                     if (isListening) {
                       recognition.current.stop();
                       setIsListening(false);
@@ -328,7 +328,7 @@ const SearchBar = () => {
                     "h-[30px] mx-2 cursor-pointer rounded-full hover:rounded-full"
                   )}
                   onClick={() => {
-                    console.log("isListening", isListening);
+                    // console.log("isListening", isListening);
                     if (isListening) {
                       recognition.current.stop();
                       setIsListening(false);

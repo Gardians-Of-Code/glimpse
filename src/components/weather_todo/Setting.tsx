@@ -16,7 +16,6 @@ import {
   CarouselPrevious,
   type CarouselApi
 } from "@/components/ui/carousel";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { storeData } from "~components/indexedDb";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "~components/ui/input";
@@ -25,9 +24,15 @@ import { Button } from "~components/ui/button";
 import { Badge } from "~components/ui/badge";
 
 import loadingSVG from "data-base64:~assets/loading.svg";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 
-const defaultBackgroundImages: string[] = [];
+import img1 from "data-base64:~assets/wallpapers/1.webp";
+import img2 from "data-base64:~assets/wallpapers/2.webp";
+import img3 from "data-base64:~assets/wallpapers/3.webp";
+import img4 from "data-base64:~assets/wallpapers/4.webp";
+import img5 from "data-base64:~assets/wallpapers/5.webp";
 
+let defaultBackgroundImages: string[] = [img1, img2, img3, img4, img5, ""];
 const Setting = ({
   userName,
   setUserName,
@@ -42,7 +47,7 @@ const Setting = ({
   let aspectRatio = 16 / 9;
   const [loading, setLoading] = useState<boolean>(false);
   const [api, setApi] = useState<CarouselApi>();
-  const [settingsDialogOpen, setSettingsDialogOpen] = useState<boolean>(false);
+  const [settingsDialogOpen, setSettingsDialogOpen] = useState<boolean>(true);
   const [backgroundType, setBackgroundType] = useState<string>(
     localStorage.getItem("backgroundType") || "tags"
   );
@@ -66,6 +71,7 @@ const Setting = ({
     fetch(url)
       .then((response) => {
         setBackgroundImage(response.url);
+        defaultBackgroundImages[5] = response.url;
         setBgUrl(response.url);
         storeData("appData", "backgroundImage", {
           backgroundImage: response.url
@@ -94,15 +100,16 @@ const Setting = ({
     }
   };
 
+  const resizeHandler = () => {
+    setScreenSize({
+      windowWidth: window.screen.width,
+      windowHeight: window.screen.height
+    });
+  };
+
   useEffect(() => {
-    const resizeHandler = () => {
-      setScreenSize({
-        windowWidth: window.screen.width,
-        windowHeight: window.screen.height
-      });
-    };
-    resizeHandler();
     aspectRatio = screenSize.windowWidth / screenSize.windowHeight;
+    // console.log(aspectRatio);
     const keydownHandler = (e: { key: string }) => {
       if (e.key === "Escape") {
         setSettingsDialogOpen(false);
@@ -117,7 +124,7 @@ const Setting = ({
     return () => {
       document.removeEventListener("keydown", keydownHandler);
     };
-  });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("backgroundType", backgroundType);
@@ -145,9 +152,14 @@ const Setting = ({
     if (!api) {
       return;
     }
-    api.on("select", (index) => {
-      // console.log(index);
+    api.on("select", () => {
       console.log(api.selectedScrollSnap() + 1);
+      const index = api.selectedScrollSnap();
+      setBackgroundImage(defaultBackgroundImages[index]);
+      localStorage.setItem("backgroundTimeStamp", "0");
+      storeData("appData", "backgroundImage", {
+        backgroundImage: defaultBackgroundImages[index]
+      });
     });
   }, [api]);
 
@@ -168,13 +180,16 @@ const Setting = ({
 
       {/* Settings dialogue */}
       <div
+        id="settings"
         ref={ref}
         className={cn(
-          "fixed bottom-4 right-4 z-[500] w-[600px] h-max py-4 px-5 m-4 rounded-md flex gap-4 flex-col items-center justify-center bg-black/70",
-          settingsDialogOpen ? "" : "hidden"
+          "fixed bottom-4 right-4 z-[500] w-[600px] h-max py-4 px-5 m-4 rounded-[20px] flex gap-4 flex-col items-center justify-center bg-black",
+          "ring-2 ring-white/20",
+          "transition-all duration-300 ease-in-out overflow-hidden",
+          settingsDialogOpen ? "" : "h-0 hidden overflow-hidden"
         )}>
         {/* Settings header */}
-        <div className="absolute top-0 left-0 w-full px-2 py-1 flex items-center justify-start">
+        <div className="absolute top-0 left-0 w-full h-[50px] px-3 py-1 flex items-center justify-start">
           <ChevronDown
             className="text-accent-foreground cursor-pointer hover:translate-y-1 transform transition-transform duration-300 ease-in-out"
             onClick={() => {
@@ -182,16 +197,16 @@ const Setting = ({
             }}
           />
 
-          <span className="flex-1 text-accent-foreground text-center text-sm font-bold">
+          <span className="flex-1 text-accent-foreground text-center text-base font-bold">
             Settings
           </span>
         </div>
 
         {/* username */}
-        <div className="w-full mt-3 flex flex-col gap-0.5 items-start justify-center">
+        <div className="w-full mt-[25px] flex flex-col gap-0.5 items-start justify-center">
           <Label
             htmlFor="username"
-            className="text-lg font-semibold text-accent-foreground ">
+            className="text-base  text-accent-foreground ">
             Username
           </Label>
           <Input
@@ -199,7 +214,7 @@ const Setting = ({
             type="text"
             value={userName}
             placeholder="Set Username"
-            className="flex-1 h-[40px] w-full bg-accent-foreground text-accent-background rounded-md p-2"
+            className="flex-1 h-[40px] w-full bg-transparent text-white rounded-md p-2"
             onChange={(e) => {
               e.preventDefault();
               setUserName(e.target.value);
@@ -210,9 +225,10 @@ const Setting = ({
         <div className="w-full flex flex-col gap-2 items-start justify-center">
           <Label
             htmlFor="background"
-            className="font-semibold text-accent-foreground ">
+            className="text-base  text-accent-foreground ">
             Background
           </Label>
+          {/* caraosal */}
           <div className="w-full p-4 flex items-center justify-center">
             <Carousel
               setApi={setApi}
@@ -222,24 +238,19 @@ const Setting = ({
               }}
               className="w-full max-w-sm">
               <CarouselContent>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <CarouselItem
-                    key={index}
-                    className="md:basis-1/2 lg:basis-1/3">
-                    <div className="p-1">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <CarouselItem key={index} className="basis-1/2">
+                    <div className="">
                       <Card>
-                        <CardContent className="flex aspect-square items-center justify-center">
-                          <span className="text-3xl font-semibold">
+                        <CardContent className="aspect-[16/9] p-0">
+                          {/* <span className="text-3xl font-semibold hidden">
                             {index + 1}
-                          </span>
-                          {/* <img
-                            src="https://source.unsplash.com/1920x1080"
-                            alt=""
-                            className="w-full h-full object-contain"
-                            onClick={() => {
-                              console.log("clicked", index);
-                            }}
-                          /> */}
+                          </span> */}
+                          <img
+                            src={defaultBackgroundImages[index]}
+                            alt="cool image"
+                            className="w-full h-full"
+                          />
                         </CardContent>
                       </Card>
                     </div>
@@ -252,184 +263,184 @@ const Setting = ({
           </div>
 
           {/* background Type selector */}
-          <div className="w-full flex  items-center justify-start text-accent-foreground">
-            {/* left */}
-            <div className="w-max p-4 text-base">
-              <RadioGroup defaultValue={backgroundType}>
+          <div className="w-full flex items-center justify-center text-accent-foreground">
+            <Tabs defaultValue={backgroundType} className="w-full h-max px-2">
+              <TabsList className="flex gap-1 items-center justify-evenly ">
+                <TabsTrigger
+                  value="tags"
+                  className={cn("basis-1/2 overflow-hidden rounded")}>
+                  <Button
+                    variant="custom"
+                    className={cn("w-full mb-[10px]", {
+                      "border-b-[2px] border-[#5858e7]":
+                        backgroundType === "tags"
+                    })}
+                    onClick={() => setBackgroundType("tags")}>
+                    Tags
+                  </Button>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="custom"
+                  className={cn("basis-1/2 overflow-hidden rounded")}>
+                  <Button
+                    variant="custom"
+                    className={cn("w-full mb-[10px]", {
+                      "border-b-[2px] border-[#5858e7]":
+                        backgroundType === "custom"
+                    })}
+                    onClick={() => setBackgroundType("custom")}>
+                    Custom
+                  </Button>
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="tags" className="w-full h-full p-2">
                 <div
-                  className="flex items-center space-x-2"
-                  onClick={() => {
-                    setBackgroundType("tags");
-                  }}>
-                  <RadioGroupItem id="r2" value="tags" />
-                  <Label htmlFor="r2">Modify with tags</Label>
-                </div>
-                <div
-                  className="flex items-center space-x-2"
-                  onClick={() => {
-                    // console.log("custom");
-                    setBackgroundType("custom");
-                  }}>
-                  <RadioGroupItem id="r3" value="custom" />
-                  <Label htmlFor="r3">Custom</Label>
-                </div>
-              </RadioGroup>
-            </div>
-
-            {/* right */}
-            <div className="flex-1">
-              {/* Tags input */}
-              <div
-                className={cn(
-                  "w-full h-[196px] flex flex-col items-center justify-start",
-                  { hidden: backgroundType !== "tags" }
-                )}>
-                <Input
-                  type="text"
-                  value={inputvalue}
-                  placeholder="Enter space-separated tags"
-                  className="w-full bg-accent-background text-black p-2"
-                  onChange={(e) => {
-                    e.preventDefault();
-                    setInputValue(e.target.value);
-                  }}
-                  onKeyDown={handleAddTag}
-                />
-                <div className="w-full flex flex-wrap items-start justify-start">
-                  {bgTags.map((tag, index) => {
-                    return (
-                      <Badge
-                        key={index}
-                        className="m-1 text-sm flex gap-1 items-center justify-between cursor-default">
-                        {tag}
-                        <X
-                          className="cursor-pointer h-[14px] w-[14px] text-accent-background hover:text-red-400 "
-                          onClick={() => {
-                            localStorage.setItem("backgroundTimeStamp", "0");
-                            setBgTags(bgTags.filter((t) => t !== tag));
-                          }}
-                        />
-                      </Badge>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* update image button */}
-              <div
-                className={cn("w-full p-2 flex items-center justify-center", {
-                  hidden: backgroundType === "custom"
-                })}>
-                <Button
-                  variant="outline"
-                  className={cn("rounded-md text-accent-foreground", {
-                    "cursor-wait": loading
-                  })}
-                  disabled={loading}
-                  onClick={() => {
-                    fetchImage(
-                      `https://source.unsplash.com/${screenSize.windowWidth}x${screenSize.windowHeight}/?${bgTags}`
-                    );
-                  }}>
-                  {loading ? (
-                    <>
-                      <img
-                        src={loadingSVG}
-                        alt="loading"
-                        className="h-[30px]"
-                      />
-                      Updating background
-                    </>
-                  ) : (
-                    <>Update background</>
-                  )}
-                </Button>
-              </div>
-
-              {/* custom walpaper input */}
-              <div
-                className={cn(
-                  "flex flex-col items-center justify-center gap-1",
-                  { hidden: backgroundType !== "custom" }
-                )}>
-                {/* url */}
-                <div className="w-full flex items-center justify-start bg-accent-background">
-                  {/* url of the bg */}
-                  <Label
-                    htmlFor="bgUrl"
-                    className="text-accent-foreground font-semibold p-2 ring-1 h-full rounded-s-md">
-                    URL
-                  </Label>
-                  <input
-                    id="bgUrl"
-                    type="url"
-                    // value={backgroundImage}
-                    placeholder="Set Background Image URL"
-                    className="flex-1 w-full p-2 bg-accent-background text-black"
+                  className={cn(
+                    "w-full h-[100px] flex gap-1 flex-col items-center justify-start"
+                  )}>
+                  <Input
+                    type="text"
+                    value={inputvalue}
+                    placeholder="Enter space-separated tags"
+                    className="w-full bg-transparent text-white p-2"
                     onChange={(e) => {
-                      // e.preventDefault();
-                      setBgUrl(e.target.value);
-                    }}></input>
+                      e.preventDefault();
+                      setInputValue(e.target.value);
+                    }}
+                    onKeyDown={handleAddTag}
+                  />
+                  <div className="w-full flex flex-wrap items-start justify-start">
+                    {bgTags.map((tag, index) => {
+                      return (
+                        <Badge
+                          key={index}
+                          className="m-1 bg-[#ffffff41] hover:bg-[#ffffff41]  text-[#b6b6b6] text-sm flex gap-1 items-center justify-between cursor-default">
+                          {tag}
+                          <X
+                            className="cursor-pointer h-[14px] w-[14px] text-accent-background hover:text-red-400 "
+                            onClick={() => {
+                              localStorage.setItem("backgroundTimeStamp", "0");
+                              setBgTags(bgTags.filter((t) => t !== tag));
+                            }}
+                          />
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* update image button */}
+                <div
+                  className={cn("w-full p-2 flex items-center justify-center")}>
                   <Button
                     variant="outline"
-                    className="max-h-full rounded-s-none rounded-e-md text-accent-foreground"
+                    className={cn("rounded-md text-accent-foreground", {
+                      "cursor-wait": loading
+                    })}
+                    disabled={loading}
                     onClick={() => {
-                      fetchImage(bgUrl);
+                      fetchImage(
+                        `https://source.unsplash.com/${screenSize.windowWidth}x${screenSize.windowHeight}/?${bgTags}`
+                      );
                     }}>
-                    Set
+                    {loading ? (
+                      <>
+                        <img
+                          src={loadingSVG}
+                          alt="loading"
+                          className="h-[30px]"
+                        />
+                        Updating background
+                      </>
+                    ) : (
+                      <>Update background</>
+                    )}
                   </Button>
                 </div>
+              </TabsContent>
+              <TabsContent value="custom" className="w-full h-full p-2">
+                <div
+                  className={cn(
+                    "flex flex-col items-center justify-center gap-1"
+                  )}>
+                  {/* url */}
+                  <div className="w-full flex items-center justify-start bg-accent-background">
+                    {/* url of the bg */}
+                    <Label
+                      htmlFor="bgUrl"
+                      className="text-white font-semibold p-2 ring-1 h-full rounded-s-md">
+                      URL
+                    </Label>
+                    <Input
+                      id="bgUrl"
+                      type="url"
+                      // value={backgroundImage}
+                      placeholder="Set Background Image URL"
+                      className="flex-1 w-full p-2 bg-transparent text-white"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          fetchImage(bgUrl);
+                        }
+                      }}
+                      onChange={(e) => {
+                        // e.preventDefault();
+                        setBgUrl(e.target.value);
+                      }}></Input>
+                    <Button
+                      variant="outline"
+                      className="max-h-full rounded-s-none rounded-e-md text-accent-foreground bg-[#0073ff33] hover:bg-[#0073ff56]"
+                      onClick={() => {
+                        fetchImage(bgUrl);
+                      }}>
+                      Set
+                    </Button>
+                  </div>
 
-                {/* Drop image */}
-                <div className="w-full p-1">
-                  <Dropzone
-                    maxFiles={1}
-                    multiple={false}
-                    accept={{
-                      "image/*": [".png", ".webp", ".jpeg", ".jpg"]
-                    }}
-                    onDrop={(acceptedFiles) => {
-                      // if the given file is not an image
-                      // console.log(acceptedFiles[0].type);
-                      // if (!acceptedFiles[0].type.includes("image")) {
-                      //   console.log("not an image");
-                      //   return;
-                      // }
-                      // create a FileReader instance
-                      const reader = new FileReader();
+                  {/* Drop image */}
+                  <div className="w-full p-1">
+                    <Dropzone
+                      maxFiles={1}
+                      multiple={false}
+                      accept={{
+                        "image/*": [".png", ".webp", ".jpeg", ".jpg"]
+                      }}
+                      onDrop={(acceptedFiles) => {
+                        const reader = new FileReader();
+                        // set the onload function of the reader
+                        reader.onload = function (e) {
+                          e.preventDefault();
+                          // e.target.result contains the Data URL
+                          // set the Data URL to the image
+                          setBackgroundImage(e.target.result as string);
+                          defaultBackgroundImages[5] = e.target
+                            .result as string;
+                          storeData("appData", "backgroundImage", {
+                            backgroundImage: e.target.result
+                          });
+                        };
 
-                      // set the onload function of the reader
-                      reader.onload = function (e) {
-                        e.preventDefault();
-                        // e.target.result contains the Data URL
-                        // set the Data URL to the image
-                        setBackgroundImage(e.target.result as string);
-                        storeData("appData", "backgroundImage", {
-                          backgroundImage: e.target.result
-                        });
-                      };
-
-                      // read the image file as a Data URL
-                      reader.readAsDataURL(acceptedFiles[0]);
-                    }}>
-                    {({ getRootProps, getInputProps }) => (
-                      <section className={cn("w-full h-[200px]")}>
-                        <div
-                          {...getRootProps()}
-                          className={
-                            "w-full h-full rounded-3xl border-[2px] border-dashed bg-slate-600/50 flex items-center justify-center text-center"
-                          }>
-                          <input {...getInputProps()} />
-                          <p className="text-wrap text-sm cursor-default">
-                            Drag 'n' drop image here, or click to select files
-                          </p>
-                        </div>
-                      </section>
-                    )}
-                  </Dropzone>
+                        // read the image file as a Data URL
+                        reader.readAsDataURL(acceptedFiles[0]);
+                      }}>
+                      {({ getRootProps, getInputProps }) => (
+                        <section className={cn("w-full h-[104px]")}>
+                          <div
+                            {...getRootProps()}
+                            className={
+                              "w-full h-full rounded-3xl border-[2px] border-dashed bg-slate-600/50 hover:bg-[#8c93d8c0] flex items-center justify-center text-center"
+                            }>
+                            <input {...getInputProps()} />
+                            <p className="text-wrap text-sm cursor-default">
+                              Drag 'n' drop image here, or click to select files
+                            </p>
+                          </div>
+                        </section>
+                      )}
+                    </Dropzone>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
