@@ -189,6 +189,20 @@
 .delete:hover {
   color: rgb(255, 0, 0);
 }
+.remove {
+  padding: 1px 0 1px 5px;
+  margin-bottom: 5px;
+  color: #ec7474;
+  background-color: #000000b2;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  /* position: absolute; */
+  /* right: 10px; */
+}
+
+.remove:hover {
+  color: rgb(255, 0, 0);
+}
 
 .edit {
   padding: 3px;
@@ -204,16 +218,19 @@
 }
 
 .tag {
+  width: 100%;
   align-items: center;
-  padding-left: 12px;
+  padding-left: 10px;
   padding-top: 1px;
   padding-bottom: 1px;
   margin-bottom: 5px;
   display: flex;
   background-color: #000000b2;
   color: white;
-  border: solid 1px black;
-  border-radius: 10px;
+  /* border: solid 1px black; */
+  /* border-radius: 10px; */
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
@@ -237,9 +254,7 @@
 
 }
 
-.newBookmark:hover {
-  background-color: rgba(0, 0, 0, 0.114);
-}
+
 .newBookmark form{
   display: flex;
   align-items: center;
@@ -248,15 +263,19 @@
   height: 100%;
 }
 .plus {
-  margin-left: 5px;
+  padding-left: 5px;
   color: white;
-
+  margin-right: 8px;
+}
+.plus:hover {
+  color: rgb(215, 215, 215);
 }
 
 .newBookmark_input {
   width: 50%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.185);
+  /* background-color: rgba(255, 255, 255, 0.185); */
+  background-color: transparent;
   /* border-left: 2px solid white; */
   border-radius: 8px;
   margin-left: 5px;
@@ -268,8 +287,11 @@
   overflow: scroll;
   
 }
+.newBookmark_input:hover {
+  background-color: rgba(0, 0, 0, 0.114);
+}
 
 .newBookmark_input::placeholder {
-  color: white;
+  color: rgba(255, 255, 255, 0.588);
   /* Set placeholder color to white */
 }

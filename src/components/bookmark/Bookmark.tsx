@@ -6,13 +6,13 @@ import { Pencil, Trash2 } from 'lucide-react';
 import './Bookmarks.css';
 
 const Bookmark = (
-    { bookmark, index, handleBookmarkClick, handleModify, handleDelete }:
+    { bookmark, index, handleBookmarkClick, handleModifyBookmark, handleDeleteBookmark }:
         {
             bookmark: BookmarkType;
             index: number;
             handleBookmarkClick: (url: string) => void;
-            handleModify: (title: string, newurl: string, tags: string) => void;
-            handleDelete: (url: string) => void;
+            handleModifyBookmark: (title: string, newurl: string, tags: string) => void;
+            handleDeleteBookmark: (url: string) => void;
         }) => {
     return (
         <div key={index} className="bookmark-elements hover:scale-[1.02] transition-all duration-100 ease-out">
@@ -55,15 +55,15 @@ const Bookmark = (
                     onClick={() => {
                         const newUrl = prompt("Enter new URL:", bookmark.url);
                         const newTitle = prompt("Enter new Title:", bookmark.title);
-                        const newTags = prompt("Enter space-separated tags:", bookmark.tags.join(" "));
+                        const newTags = prompt("Enter space-separated tags:", bookmark.tags.join(","));
                         if (newUrl !== null && newTitle !== null && newTags !== null) {
-                            handleModify(newTitle, newUrl, newTags);
+                            handleModifyBookmark(newTitle, newUrl, newTags);
                         }
                     }}
                 />
                 <Trash2
                     className="delete cursor-pointer"
-                    onClick={() =>{handleDelete(bookmark.url) } }
+                    onClick={() =>{handleDeleteBookmark(bookmark.url) } }
                 />
             </div>
         </div>
