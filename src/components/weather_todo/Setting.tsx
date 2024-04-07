@@ -169,7 +169,7 @@ const Setting = ({
       <div className={cn("fixed bottom-4 right-2 w-12 z-[500]")}>
         <Settings
           className={cn(
-            "h-full rotate  cursor-pointer",
+            " gear_setting h-full rotate  cursor-pointer",
             settingsDialogOpen ? "hidden" : ""
           )}
           onClick={() => {

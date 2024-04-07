@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./middle.css"
 
 const Greet = ({ userName }: { userName: string }) => {
   const [greetingMode, setGreetingMode] = useState(
@@ -26,7 +27,7 @@ const Greet = ({ userName }: { userName: string }) => {
   }, [greetingMode, userName]);
 
   return (
-    <div className="w-full h-max my-2 flex items-center justify-center">
+    <div className="greet">
       <input
         type="text"
         value={currentGreeting}
@@ -34,7 +35,7 @@ const Greet = ({ userName }: { userName: string }) => {
         autoComplete="off"
         autoCorrect="off"
         spellCheck="false"
-        className="w-full h-full text-center bg-transparent border-none focus:outline-none focus:underline text-3xl text-white font-semibold mx-2 py-2"
+        className="greet_input"
         onChange={(e) => {
           if (e.target.value.startsWith("/")) {
             if (e.target.value === "/auto") {

@@ -20,21 +20,17 @@ function DateNTime() {
   });
 
   const formattedDate = currentTime.toLocaleDateString("en-US", {
-    weekday: "short",
+    weekday: "long",
     // year: "numeric",
-    month: "short",
+    month: "long",
     day: "numeric",
   });
 
   return (
     <>
-      <div className="greeting">
-        <div className="time">
-          <span className="">{formattedTime}</span>
-        </div>
-        <div className="date">
-          <span className="">{formattedDate}</span>
-        </div>
+      <div className="dateNtime">
+        <div className="time">{formattedTime}</div>
+        <div className="date">{formattedDate}</div>
       </div>
     </>
   );
