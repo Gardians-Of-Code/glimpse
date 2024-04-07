@@ -18,14 +18,27 @@ import Greet from "./Greet";
 const Middle = ({ userName }: { userName: string }) => {
   const [quote, setQuote] = useState("");
   useEffect(() => {
-    // fetchQuote();
+    fetchQuote();
   }, []);
 
   const fetchQuote = async () => {
-    const response = await fetch("https://api.quotable.io/random");
-    const data = await response.json();
-    setQuote(data.content);
+    try {
+      const response = await fetch("https://api.quotable.io/random?whr=en");
+      const data = await response.json();
+      
+      if (data && data.hasOwnProperty('content')) {
+        setQuote(data.content);
+      } else {
+        // If no quote is available, set a default quote
+        setQuote("Today is the day to start.");
+      }
+    } catch (error) {
+      console.error("Error fetching quote:", error);
+      // If an error occurs during fetching, set a default quote
+      setQuote("Today is the day to start.");
+    }
   };
+  
 
   return (
     <>
@@ -36,10 +49,8 @@ const Middle = ({ userName }: { userName: string }) => {
         {/*center_card*/}
         <div className="center_card backdrop-blur-[2px]">
           {/* greeting and time */}
-          <div className="basis-[70%] w-full flex flex-col items-center justify-center">
             <DateNTime />
             <Greet userName={userName} />
-          </div>
           {/* searchbar */}
           <div className="searchbar">
             <div className="w-full h-[--searchbarHeight]">

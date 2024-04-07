@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import loadingSVG from "data-base64:~assets/loading.svg";
+import "./weather.css";
 
 import { useOnClickOutside } from "~components/use-on-click-outside";
 
@@ -107,7 +108,7 @@ const WeatherCard = () => {
       {/* smaller */}
       <div
         className={cn(
-          "fixed top-0 right-1 m-2 cursor-pointer ",
+          "weather_card fixed top-0 right-1 m-2 cursor-pointer ",
           showWeatherCard ? "hidden" : ""
         )}
         onClick={(e) => {
@@ -135,7 +136,7 @@ const WeatherCard = () => {
       <div
         ref={ref}
         className={cn(
-          "fixed top-2 right-2 p-2 bg-black/60 rounded-md shadow-md text-white",
+          " weather_card fixed top-2 right-2 p-2 shadow-md text-white",
           showWeatherCard ? "" : "hidden"
         )}>
         <div className="w-full h-full flex items-center justify-center">

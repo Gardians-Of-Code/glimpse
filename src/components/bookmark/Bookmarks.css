@@ -7,10 +7,10 @@
   /* padding: 10px; */
   display: flex;
   flex-direction: column;
-  border: 2px solid rgba(0, 0, 0, 0.274);
+  /* border: 2px solid rgba(0, 0, 0, 0.274); */
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.22);
-  /* background-color: linear-gradient(to right, red , yellow); */
+  background: linear-gradient(to right,rgba(0, 0, 0, 0.118), rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.22),rgba(0, 0, 0, 0.112));
   backdrop-filter: blur(4px);
 }
 
