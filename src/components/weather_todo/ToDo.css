@@ -9,9 +9,10 @@
     border-radius: 10px;
 }
 
+ 
 .todo-button{
     border-radius: 10px;
-    background-color: rgba(202, 216, 216, 0.692);
+    background-color: rgba(46, 175, 175, 0.692);
 }
 
 .todo-dropdown{

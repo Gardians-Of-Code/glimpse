@@ -47,7 +47,7 @@ const Setting = ({
   let aspectRatio = 16 / 9;
   const [loading, setLoading] = useState<boolean>(false);
   const [api, setApi] = useState<CarouselApi>();
-  const [settingsDialogOpen, setSettingsDialogOpen] = useState<boolean>(true);
+  const [settingsDialogOpen, setSettingsDialogOpen] = useState<boolean>(false);
   const [backgroundType, setBackgroundType] = useState<string>(
     localStorage.getItem("backgroundType") || "tags"
   );
