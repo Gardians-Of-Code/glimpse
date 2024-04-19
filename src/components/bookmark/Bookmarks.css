@@ -9,8 +9,8 @@
   flex-direction: column;
   /* border: 2px solid rgba(0, 0, 0, 0.274); */
   border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.22);
-  background: linear-gradient(to right,rgba(0, 0, 0, 0.118), rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.22),rgba(0, 0, 0, 0.112));
+  /* background-color: rgba(198, 16, 16, 0.22); */
+  background: linear-gradient(to top right, #00000030, #ffffff3b,#ffffff33 , #ffffff3b, #0000002e);
   backdrop-filter: blur(4px);
 }
 
@@ -86,22 +86,40 @@
   font-size: small;
   color: rgba(255, 255, 255, 0.847);
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* margin: 7px 5px; */
   /* padding: 5px 10px; */
   border: 1px solid rgba(0, 0, 0, 0.244);
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.104);
 }
+  
 
 .bookmark-types-active {
   background-color: rgba(0, 0, 0, 0.778);
   color: white;
 }
 
-/* .bookmark-types:hover {
-  background-color: rgba(0, 0, 0, 0.194);
-  color: white;
-} */
+
+@keyframes rainbow {
+  0% { color: red; }
+  14% { color: orange; }
+  28% { color: yellow; }
+  42% { color: rgb(110, 229, 110); }
+  57% { color: rgb(113, 113, 228); }
+  71% { color: rgb(144, 64, 201); }
+  85% { color: violet; }
+  100% { color: red; }
+}
+
+.rainbow-text {
+  animation: rainbow 5s infinite;
+}
+
+
+
 
 /*This is for scroll if content overfloew*/
 .bookmark-showing {

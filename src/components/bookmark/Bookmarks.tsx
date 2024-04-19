@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import "./Bookmarks.css";
 import InputBookmark from "./InputBookmark";
-import { Pencil, Trash2, Star, ChevronLeft, ChevronsUpDown, Check, Text, ChevronDown, ChevronRight, Delete, X, } from "lucide-react";
+import { Pencil, Trash2, Star, ChevronLeft, ChevronsUpDown, Check, Text, ChevronDown, ChevronRight, Delete, X, Sparkles, } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "~components/use-on-click-outside";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, } from "@/components/ui/command";
@@ -17,6 +17,7 @@ export type BookmarkType = {
   addedAt: number;
   count: number;
   tags: string[]; // Added tags property
+  mltags: string[]; // Added mltags property
 };
 
 type customTagType = {
@@ -31,13 +32,20 @@ function Bookmarks() {
   const [bookmarkCategory, setBookmarkCategory] = useState<string>("closed");
   const [currUrl, setCurrUrl] = useState<string>("");
   const [tags, setTags] = useState<string>("");
+
+  //all bookmarks
   const [bookmarks, setBookmarks] = useState<BookmarkType[]>(
     JSON.parse(localStorage.getItem("bookmarks") as string) || [],
   );
+  //all custom tags
   const [customTags, setCustomTags] = useState<customTagType[]>(
     JSON.parse(localStorage.getItem("customTags") as string) || [],
   );
 
+  //all ml tags
+  const [mlTags, setMlTags] = useState<string[]>(
+    JSON.parse(localStorage.getItem("mlTags") as string) || [],
+  );
   const [lock, setLock] = useState<boolean>(false);
   const [sorterOpen, setSorterOpen] = useState(false);
   const [sortBy, setSortBy] = useState<string>(
@@ -127,6 +135,8 @@ function Bookmarks() {
   //   }
   // }, []);
 
+
+
   const handleAddBookmark = async (e: React.FormEvent) => {
     e.preventDefault();
     // console.log("tags", tags);
@@ -162,20 +172,30 @@ function Bookmarks() {
       tagsToAdd.forEach((tag, index) => { tagsToAdd[index] = tag.trim(); });
       //remove repeated elements from tagsToAdd
       const uniqueTagsArray = tagsToAdd.filter((item, index) => tagsToAdd.indexOf(item) === index);
-      // console.log("tagsToAdd", tagsToAdd);
+
+      //get mltags
+      const getMLTags = await fetch("http://localhost:3000/api/v1/mltags", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: currUrl }),
+      });
+
       const newBookmark = {
         title: title,
         url: url,
         addedAt: Date.now(),
         count: 0,
-        tags: uniqueTagsArray, // Initialize tags array
+        tags: uniqueTagsArray, // Initialize custom tags array
+        mltags: getMLTags,// Initialize ml tags array
       };
       console.log("newBookmark", newBookmark);
       updateTags("", tags); // Update custom tags
 
       // Update state using the callback form of setState to ensure localStorage is updated with the latest state
-      setBookmarks((prevBookmarks) => {
-        const updatedBookmarks = [...prevBookmarks, { ...newBookmark, tags: uniqueTagsArray }];
+      setBookmarks(prevBookmarks => {
+        const updatedBookmarks = [...prevBookmarks, { ...newBookmark,tags : uniqueTagsArray, mltags: getMLTags }];
         localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks)); // Update localStorage
         return updatedBookmarks;
       });
@@ -465,6 +485,7 @@ function Bookmarks() {
 
 
                     {/* ML tags */}
+                   
                     <button
                       className={cn(
                         "bookmark-types mr-2 p-1.5 px-2.5",
@@ -475,8 +496,14 @@ function Bookmarks() {
                         setBookmarkCategory("ml");
                       }}
                     >
+                      <Sparkles 
+                      className={cn(
+                        "h-4 w-4 mr-1",
+                        { "rainbow-text": bookmarkCategory === "ml" },
+                      )} />
                       Auto
                     </button>
+                    
                   </div>
                 </div>
 
@@ -485,6 +512,8 @@ function Bookmarks() {
 
 
               <div className="bookmark-showing">
+
+                
 
                 {bookmarkCategory === "sort" && (
                   <div className="flex flex-col justify-start px-4">
@@ -554,6 +583,38 @@ function Bookmarks() {
                     ))}
                   </div>
                 )}
+
+                {bookmarkCategory === "ml" && (
+                  <div className="flex flex-col justify-start px-4">
+                    {mlTags.map((tag, index) => (
+                      <div key={index} className="h-max">
+                        <div className="flex items-center">
+                          <span className="tag">{tag}</span>
+                        </div>
+                        {bookmarks
+                          .filter(bookmark => {
+                            if (bookmark.mltags.includes(tag)) {
+                              return bookmark;
+                            }
+                          })
+                          .map((bookmark, index) => (
+                            <Bookmark
+                              key={index}
+                              bookmark={bookmark}
+                              index={index}
+                              handleBookmarkClick={handleBookmarkClick}
+                              handleModifyBookmark={handleModifyBookmark}
+                              handleDeleteBookmark={handleDeleteBookmark}
+                            />
+                          ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+
+
+
               </div>
 
 
