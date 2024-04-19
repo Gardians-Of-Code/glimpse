@@ -5,6 +5,7 @@ import Bookmarks from "~components/bookmark/Bookmarks";
 import Middle from "~components/middle/Middle";
 import Setting from "~components/weather_todo/Setting";
 import WeatherCard from "~components/weather_todo/WeatherCard";
+// import ToDo from "~components/weather_todo/ToDo";
 
 import { retrieveData } from "./indexedDb";
 // const Setting = lazy(() => import("~components/weather_todo/Setting"));
@@ -57,6 +58,7 @@ const Landing = () => {
               backgroundImage={backgroundImage}
               setBackgroundImage={setBackgroundImage}
             />
+            {/* <ToDo/> */}
             <WeatherCard />
           </div>
         </div>

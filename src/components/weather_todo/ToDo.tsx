@@ -1,86 +1,87 @@
 import { useState, useRef, useEffect } from "react";
 import "./ToDo.css";
 import React from "react";
-// import ReactDOM from "react-dom/client";
+
+import ToDoElement from "./ToDoElement";
+import type { ToDoType } from "./ToDoElement";
 
 
-const Input = ({ items, setItems }:{items:string[], setItems:React.Dispatch<React.SetStateAction<string[]>>}) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+function ToDo() {
 
-  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    if (inputRef.current) {
-      setItems([...items, inputRef.current.value]);
-      inputRef.current.value = "";
-    }
+  const [toDoList, settoDoList] = useState<ToDoType[]>(
+    JSON.parse(localStorage.getItem("toDoList") as string || "[]")
+  );
+  // const [inEditMode,setinEditMode] = useState<boolean>(false);
+  const [lastIndex, setLastIndex] = useState<number>(0);
+
+
+  useEffect(() => {
+    // if(inEditMode){
+    localStorage.setItem("toDoList", JSON.stringify(toDoList));
+    // }
+  }, [toDoList]);
+
+  const handleDeleteToDo = (index: number) => {
+    const newToDoList = toDoList.filter((_, i) => i !== index);
+    settoDoList(newToDoList);
   };
 
-  const handleDelete = (itemToDelete:string) => {
-    setItems(() => items.filter((item) => item !== itemToDelete));
+  const handleAddToDo = () => {
+    const newToDoList = [
+      ...toDoList,
+      {
+        title: "New ToDo",
+        checked: false,
+        deadline: new Date(),
+      },
+    ];
+    settoDoList(newToDoList);
+    // setinEditMode(true);
+    setLastIndex(lastIndex + 1);
+  };
+
+  const changeTitle = (index: number, newTitle: string) => {
+    const newToDoList = toDoList.map((toDo, i) =>
+      i === index ? { ...toDo, title: newTitle } : toDo
+    );
+    settoDoList(newToDoList);
+  };
+
+  const changeDeadline = (index: number, newDeadline: Date) => {
+    const newToDoList = toDoList.map((toDo, i) =>
+      i === index ? { ...toDo, deadline: newDeadline } : toDo
+    );
+    settoDoList(newToDoList);
   };
 
   return (
-    <div>
-      <form
-        onSubmit={(evt) => {
-          handleSubmit(evt);
-        }}
-      >
-        <input className="addTask" type="text" placeholder="Add a Task" ref={inputRef} />
-        <button className="addButton">Add</button>
-      </form>
-      <div className="item-list-container">
-        {items.length > 0 &&
-          items.map((item:string) => (
-            <div className="item" key={item}>
-              {item}
-              <button
-                className="deleteButton"
-                onClick={(evt) => {
-                  handleDelete(item);
-                }
-              }
-              >
-                X
-              </button>
-            </div>
-          ))}
+    <div className="toDo">
+      <div className="toDo_header">
+        <h1 className="toDo_title">To Do</h1>
+        <button className="toDo_add" onClick={handleAddToDo}>
+          Add
+        </button>
+      </div>
+
+      <div className="ToDo-Showing flex flex-col justify-start px-4">
+        {toDoList?.map((toDoItem, index) => (
+          <ToDoElement
+            key={index}
+            index={index} // Add the index prop here
+            toDoItem={toDoItem}
+            changeTitle={changeTitle}
+            changeDeadline={changeDeadline}
+            handleDeleteToDo={handleDeleteToDo}
+
+          />
+        ))}
       </div>
     </div>
   );
-};
 
-// const toggleTodos = () => {
-//   setTodos(!Todos);
-// };
 
-function ToDo() {
-  const storedItems = JSON.parse(localStorage.getItem("items")) || [];
-  const [Todos, setTodos] = useState<boolean>(false);
 
-  const toggleTodos = () => {
-    setTodos(!Todos);
-  };
 
-  const [items, setItems] = useState(storedItems);
 
-  useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(items))
-  }, [items]);
-  
-  return (
-    <div className="todo-container">
-      <button className="todo-button" onClick={toggleTodos}>
-        To-do List
-      </button>
-      {Todos && (
-        <div className="todo-dropdown">
-          <Input items={items} setItems={setItems} />
-        </div>
-      )}
-    </div>
-  );
 
 }
-
-export default ToDo;
