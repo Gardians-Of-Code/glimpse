@@ -390,7 +390,7 @@ function Bookmarks() {
 
                   {/* end of sortBy implementation */}
                   <div className="flex gap-2 items-center justify-center">
-
+                    {/* Sorting option */}
                     <button
                       className={cn(
                         "bookmark-types h-full ml-2 py-1 pl-2 rounded-[10px] flex items-center",
@@ -468,7 +468,7 @@ function Bookmarks() {
                     </button>
 
 
-                    {/* Custom tags */}
+                    {/* Custom tags option */}
                     <button
                       className={cn(
                         "bookmark-types p-1.5 px-2.5",
@@ -482,10 +482,7 @@ function Bookmarks() {
                       Custom
                     </button>
 
-
-
-                    {/* ML tags */}
-                   
+                    {/* ML tags option */}                  
                     <button
                       className={cn(
                         "bookmark-types mr-2 p-1.5 px-2.5",
@@ -510,11 +507,11 @@ function Bookmarks() {
                 <div className="w-[calc(100%-10px)] h-[1.5px] bg-black/50 mb-2 ml-[5px] rounded-full "></div>
               </div>
 
-
+              {/* Displaying the content of bookmark based on option chosen*/}
               <div className="bookmark-showing">
 
                 
-
+                      
                 {bookmarkCategory === "sort" && (
                   <div className="flex flex-col justify-start px-4">
                     {bookmarks?.map((bookmark, index) => (

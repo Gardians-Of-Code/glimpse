@@ -121,7 +121,7 @@ const WeatherCard = () => {
             loading ? "animate-pulse" : ""
           )}>
           <img src={weatherIcon} alt={""} className="h-full" />
-          <div className="flex flex-col items-center justify-center">
+          <div className="temperature-text flex flex-col items-center justify-center">
             <span className="text-3xl font-medium antialiased">
               {Math.round(weatherData?.main.temp as number).toString() +
                 "\u00B0" +
@@ -154,8 +154,8 @@ const WeatherCard = () => {
             </span>
             <div className="flex items-center justify-center">
               <img src={weatherIcon} alt="wi" className="h-full" />
-              <div className="flex items-center justify-center">
-                <span className="text-5xl">
+              <div className="temperature-text flex items-center justify-center">
+                <span className="temperature-text text-5xl">
                   {Math.round(weatherData?.main.temp as number).toString() +
                     "\u00B0" +
                     (tempUnit === "metric" ? "C" : "F")}
@@ -165,7 +165,7 @@ const WeatherCard = () => {
           </div>
 
           {/* 2nd */}
-          <div className="flex-1 flex flex-col items-center justify-center text-sm mx-2 px-2">
+          <div className="temperature-text flex-1 flex flex-col items-center justify-center text-sm mx-2 px-2">
             <span>
               Feels like:{" "}
               {Math.round(weatherData?.main.feels_like as number).toString() +

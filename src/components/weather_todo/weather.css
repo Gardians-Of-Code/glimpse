@@ -2,6 +2,11 @@
   /* background-color: brown; */
   border-radius: 20px;
   padding-right: 20px;
-  background-image: linear-gradient(to left bottom, rgba(0, 0, 0, 0.285) 0%, rgba(249, 249, 249, 0.316) 65%, rgba(0, 0, 0, 0.192) 100%);
-  backdrop-filter: blur(10px);
+  /* background-image: linear-gradient(to left bottom, rgba(0, 0, 0, 0.285) 0%, rgba(249, 249, 249, 0.316) 65%, rgba(0, 0, 0, 0.192) 100%); */
+  backdrop-filter: blur(100px);
+}
+.temperature-text{
+  color: #ffffffef; /* Default white text color */
+  mix-blend-mode: difference;
+  filter: invert(.0.5);
 }
