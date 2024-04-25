@@ -66,7 +66,7 @@ const WeatherCard = () => {
     if (loacation) {
       setLoading(true);
       fetch(
-        `http://localhost:3000/api/v1/weather?lat=${loacation.latitude}&lon=${loacation.longitude}&units=${tempUnit}`,
+        `http://localhost:5000/api/v1/weather?lat=${loacation.latitude}&lon=${loacation.longitude}&units=${tempUnit}`,
         {
           method: "POST",
           headers: {

@@ -1,6 +1,6 @@
 const createSummery = async (url: string) => {
   // requets to the server to get the summery
-  const response = await fetch("http://localhost:3000/api/v1/summery", {
+  const response = await fetch("http://localhost:5000/api/v1/summery", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

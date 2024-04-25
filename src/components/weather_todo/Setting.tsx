@@ -156,6 +156,7 @@ const Setting = ({
       console.log(api.selectedScrollSnap() + 1);
       const index = api.selectedScrollSnap();
       setBackgroundImage(defaultBackgroundImages[index]);
+      localStorage.setItem("backgroundType", "custom");
       localStorage.setItem("backgroundTimeStamp", "0");
       storeData("appData", "backgroundImage", {
         backgroundImage: defaultBackgroundImages[index]

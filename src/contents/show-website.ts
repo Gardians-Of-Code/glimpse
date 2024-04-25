@@ -16,7 +16,7 @@ function findHoverWindow() {
 
 const fetchHtml = async (url: string, showLanguage: string) => {
   // console.log("fetching...", url, showLanguage)
-  const response = await fetch("http://localhost:3000/api/v1/proxy", {
+  const response = await fetch("http://localhost:5000/api/v1/proxy", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
