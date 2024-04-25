@@ -4,10 +4,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/com
 import { Pencil, Trash2 } from 'lucide-react';
 import './ToDoElement.css';
 import { useState } from 'react';
+import type { ToDoType } from './ToDoType';
 
 import DatePicker from "react-datepicker";
 
-export default function SelectDateTime() {
+ function SelectDateTime() {
     const [date, setDate] = useState(new Date());
     return (
         <div>
@@ -54,8 +55,7 @@ const InlineEdit = ({ value, setValue }) => {
     const [editingValue, setEditingValue] = useState(value);
     const onChange = (event) => setEditingValue(event.target.value);
 
-    const handleKeyDown = (event) => {
-        const key = event.key;
+    const handleKeyDown = (event) => {        const key = event.key;
         if (key === 'Enter' || key === 'Escape') {
             event.target.blur();
         }
@@ -77,16 +77,10 @@ const InlineEdit = ({ value, setValue }) => {
     )
 }
 
-export type ToDoType = {
-    title: string;
-    checked: boolean;
-    deadline: Date;
-}
-
 
 const ToDoElement = (
     { toDoItem,
-        // index,
+        index,
         changeDeadline,
         changeTitle,
         handleDeleteToDo
@@ -94,14 +88,13 @@ const ToDoElement = (
 
         {
             toDoItem: ToDoType;
-            // index: number; 
+            index: number; 
             changeTitle: (index: number, newTitle: string) => void;
             changeDeadline: (index: number, newDeadline: Date) => void;
             handleDeleteToDo: (index: number) => void;
         }
 
-) => (
-    <div key={index} className="todo-elements hover:scale-[1.02] transition-all duration-100 ease-out">
+) => (    <div key={index} className="todo-elements hover:scale-[1.02] transition-all duration-100 ease-out">
         <span className="each_todo_title">
             <InlineEdit value={toDoItem.title} setValue={(newTitle) => changeTitle(index, newTitle)} />
         </span>
@@ -117,3 +110,5 @@ const ToDoElement = (
         </div>
     </div>
 )
+
+export default ToDoElement;

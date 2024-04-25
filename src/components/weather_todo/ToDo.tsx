@@ -3,7 +3,8 @@ import "./ToDo.css";
 import React from "react";
 
 import ToDoElement from "./ToDoElement";
-import type { ToDoType } from "./ToDoElement";
+import type { ToDoType } from "./ToDoType";
+// import type { ToDoType } from "./ToDoElement";
 
 
 function ToDo() {
