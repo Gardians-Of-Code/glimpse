@@ -11,7 +11,7 @@ function IndexPopup() {
         developed as a part of Software Enginnering Course.
       </p>
       <span className="text-base">
-        For quaries{" "}
+        For queries{" "}
         <a
           href="https://github.com/Gardians-Of-Code/glimpse/discussions"
           className="text-blue-600 underline visited:text-purple-600">
