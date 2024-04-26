@@ -4,7 +4,7 @@ Glimpse aims to enhance users' browsing experience by providing an array of prod
 
 Glimpse also provides users with weather information of their current location and the estimated time to read an article. Users can customise the browser's homepage with a background image of their choice, either by uploading an image or selecting one from a collection of images. Additionally, users can choose to display a random image from the web using keywords. The extension also supports live background images (GIFs).
 
-### Video Demo Link
+### [Video Demo Link](https://www.youtube.com/watch?v=2-xq-xKDtvk)
 [![Glimpse Demo](https://img.youtube.com/vi/2-xq-xKDtvk/0.jpg)](https://www.youtube.com/watch?v=2-xq-xKDtvk)
 
 ## Features
