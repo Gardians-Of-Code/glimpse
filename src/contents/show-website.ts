@@ -1,3 +1,5 @@
+import loadingPage from "data-text:~contents/loading.html";
+
 function findHoverWindow() {
   const plasmoHoverWindow = document.querySelector("#hover-window");
   if (plasmoHoverWindow && plasmoHoverWindow.shadowRoot) {
@@ -33,29 +35,33 @@ export const showWebPage = async (
   showLanguage: string,
   hoverWindow: HTMLElement | Element
 ) => {
-  const iframe = document.createElement("iframe");
-  iframe.srcdoc = "<h1>Loading...</h1>";
-  // console.log("loading...");
-  iframe.width = "100%";
-  iframe.height = "100%";
+  // const loadingImage = hoverWindow.querySelector("#loadingImage");
+  const iframe = hoverWindow.querySelector("iframe");
   let readingTime = 0;
+  if (iframe) {
+    iframe.srcdoc = loadingPage;
+  }
 
   const { html, readingTime: fetchedReadingTime } = await fetchHtml(
     url,
     showLanguage
   );
   iframe.srcdoc = html;
+  // iframe.width = "100%";
+  // iframe.height = "100%";
   readingTime = fetchedReadingTime;
-
-  hoverWindow.innerHTML = "";
-  hoverWindow.appendChild(iframe);
+  // hoverWindow.appendChild(iframe);
   return readingTime;
 };
 
 export const removeWebPage = () => {
   const hoverWindow = findHoverWindow();
   if (hoverWindow) {
-    hoverWindow.innerHTML = "";
+    // remove the iframe
+    const iframe = hoverWindow.querySelector("iframe");
+    if (iframe) {
+      iframe.srcdoc = loadingPage;
+    }
   }
 };
 

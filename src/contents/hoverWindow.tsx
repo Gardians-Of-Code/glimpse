@@ -1,22 +1,9 @@
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from "@/components/ui/popover";
 import cssText from "data-text:~style.css";
 import {
   Bookmark,
   BookmarkCheck,
-  Check,
-  ChevronsUpDown,
+  // Check,
+  // ChevronsUpDown,
   Languages,
   Text,
   X
@@ -32,6 +19,9 @@ import {
   removeBookmark
 } from "./bookmark-utility";
 import { putWebsite, removeWebPage } from "./show-website";
+
+// import loadingInfinite from "data-base64:~assets/loading-infinite.svg";
+import { createSummary } from "./summary-utility";
 
 export const config: PlasmoCSConfig = {
   matches: [
@@ -61,6 +51,7 @@ export type PlasmoCSUIAnchor = {
 export const getShadowHostId = () => "hover-window";
 const HoverWindow = () => {
   // sates
+  const [fetchingSummery, setFetchingSummery] = useState<boolean>(false);
   const [viewPortWidth, setViewPortWidth] = useState<number>();
   const [isOpen, setIsOpen] = useState(false);
   const [allachors, setAllachors] = useState<HTMLAnchorElement[]>([]);
@@ -75,6 +66,8 @@ const HoverWindow = () => {
   const [showLanguage, setShowLanguage] = useState<string>(navigator.language);
   const [languageSelctorOpen, setLanguageSelctorOpen] =
     useState<boolean>(false);
+
+  const loadinngImageRef = useRef<HTMLDivElement>(null);
 
   const languageOptions = [
     { value: "en", name: "English" },
@@ -150,6 +143,7 @@ const HoverWindow = () => {
 
   // put the website in the hover window
   useEffect(() => {
+    // loadinngImageRef.current?.classList.remove("hidden");
     if (currentHoveredLink !== "") {
       // console.log("currentHoveredLink: ", currentHoveredLink)
       putWebsite(currentHoveredLink, showLanguage).then((readingTime) => {
@@ -159,14 +153,6 @@ const HoverWindow = () => {
       // setLockWindow(true)
     }
   }, [currentHoveredLink, showLanguage]);
-
-  // const hoverContainerRef = useRef<HTMLDivElement>(null);
-  // useOnClickOutside(hoverContainerRef, () => {
-  //   // setIsOpen(false);
-  //   // setLockWindow(false);
-  //   // setCurrentHoveredLink("");
-  //   // removeWebPage();
-  // });
 
   useEffect(() => {
     // click event listener
@@ -206,7 +192,12 @@ const HoverWindow = () => {
           </div>
           {/* summerizer */}
           <div className="h-full">
-            <Text className="cursor-pointer" />
+            <Text
+              className="cursor-pointer"
+              onClick={() => {
+                createSummary(currentHoveredLink);
+              }}
+            />
           </div>
           {/* Bookmark */}
           <div className="h-full">
@@ -244,7 +235,17 @@ const HoverWindow = () => {
       </div>
       <div
         id="hoverWindow"
-        className={cn("w-full md:h-[600px] sm:h-[400px] ")}></div>
+        className={cn(
+          "w-full md:h-[600px] sm:h-[400px] flex items-center justify-center"
+        )}>
+        {/* <div
+          ref={loadinngImageRef}
+          id="loadingImage"
+          className="flex items-center justify-center">
+          <img src={loadingInfinite} className="w-20 h-20" />
+        </div> */}
+        <iframe src="" width={"100%"} height={"100%"}></iframe>
+      </div>
     </div>
   );
 };
