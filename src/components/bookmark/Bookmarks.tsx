@@ -173,13 +173,16 @@ function Bookmarks() {
       }
 
       // get everything from url
-      const response = await fetch("http://localhost:5000/api/v1/urldata", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ url: _url })
-      });
+      const response = await fetch(
+        `${process.env.PLASMO_PUBLIC_BACKEND_URL}/api/v1/urldata`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ url: _url })
+        }
+      );
 
       const data = await response.json();
       console.log("data", data);
@@ -211,7 +214,7 @@ function Bookmarks() {
       );
 
       // //get mltags
-      // const getMLTags = await fetch("http://localhost:5000/api/v1/get_tags", {
+      // const getMLTags = await fetch(`${process.env.PLASMO_PUBLIC_BACKEND_URL}/api/v1/get_tags`, {
       //   method: "POST",
       //   headers: {
       //     "Content-Type": "application/json"

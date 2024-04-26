@@ -5,19 +5,28 @@ import "~style.css";
 
 function IndexPopup() {
   return (
-    <div className="flex flex-col items-center justify-center h-[160px] w-[160px]">
-      <CountButton />
-      <h2>
-        Welcome to your{" "}
+    <div className="w-[500px] h-max p-4 rounded-md bg-accent">
+      <p className="text-base text-accent-foreground">
+        This project is developed by group of students of IIT Roorkee. It is
+        developed as a part of Software Enginnering Course.
+      </p>
+      <span className="text-base">
+        For quaries{" "}
         <a
-          className="text-blue-500 underline"
-          href="https://www.plasmo.com"
-          target="_blank">
-          Plasmo
-        </a>{" "}
-        Extension!
-      </h2>
-      
+          href="https://github.com/Gardians-Of-Code/glimpse/discussions"
+          className="text-blue-600 underline visited:text-purple-600">
+          here
+        </a>
+        {/* <Button
+          variant="link"
+          onClick={() => {
+            chrome.tabs.create({
+              url: "https://github.com/Gardians-Of-Code/glimpse/discussions"
+            });
+          }}>
+          here
+        </Button> */}
+      </span>
     </div>
   );
 }

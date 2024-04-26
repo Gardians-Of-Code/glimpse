@@ -18,13 +18,16 @@ function findHoverWindow() {
 
 const fetchHtml = async (url: string, showLanguage: string) => {
   // console.log("fetching...", url, showLanguage)
-  const response = await fetch("http://localhost:5000/api/v1/proxy", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ url, showLanguage })
-  });
+  const response = await fetch(
+    `${process.env.PLASMO_PUBLIC_BACKEND_URL}/api/v1/proxy`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ url, showLanguage })
+    }
+  );
   const readingTime = parseInt(response.headers.get("x-reading-time") || "0");
   const html = await response.text();
   return { html, readingTime };

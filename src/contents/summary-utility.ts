@@ -1,12 +1,15 @@
 export const createSummary = async (url: string) => {
   // requets to the server to get the summary
-  const response = await fetch("http://localhost:5000/api/v1/summary", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ url })
-  });
+  const response = await fetch(
+    `${process.env.PLASMO_PUBLIC_BACKEND_URL}/api/v1/summary`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ url })
+    }
+  );
 
   // download the summary as a file
   if (!response.ok) {
