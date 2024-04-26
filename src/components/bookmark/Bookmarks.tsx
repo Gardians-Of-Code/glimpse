@@ -124,6 +124,7 @@ function Bookmarks() {
     console.log("filteredCustomTags", filteredCustomTags);
     localStorage.setItem("customTags", JSON.stringify(filteredCustomTags));
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+    localStorage.setItem("mlTags", JSON.stringify(mlTags));
   };
 
   //any changes in customTags or bookmarks will trigger this useEffect
@@ -139,12 +140,12 @@ function Bookmarks() {
     console.log("filteredCustomTags", filteredCustomTags);
     localStorage.setItem("customTags", JSON.stringify(filteredCustomTags));
   }, [customTags]);
-  
+
   useEffect(() => {
-    const filteredCustomTags = mlTags.filter((tag) => tag.count > 0);
-    console.log("filteredCustomTags", filteredCustomTags);
-    localStorage.setItem("customTags", JSON.stringify(filteredCustomTags));
-  }, [customTags]);
+    const filteredmlTags = mlTags.filter((tag) => tag.count > 0);
+    console.log("filteredmlTags", filteredmlTags);
+    localStorage.setItem("mlTags", JSON.stringify(filteredmlTags));
+  }, [mlTags]);
 
   useEffect(() => {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
@@ -190,7 +191,7 @@ function Bookmarks() {
       const title = await data.title;
       const url = await data.url;
       const _mlTags = await data.mlTags;
-      setMlTags(_mlTags);
+      // setMlTags(_mlTags);
 
       //if bookmark already exists, do not add, show message that already exists
       if (bookmarks.some((bookmark) => bookmark.url === url)) {
@@ -233,6 +234,9 @@ function Bookmarks() {
         tags: uniqueTagsArray, // Initialize custom tags array
         mltags: _mlTags // Initialize ml tags array
       };
+      //update ml tags count
+      handleAddMlTags(_mlTags, 1);
+
       console.log("newBookmark", newBookmark);
       updateTags("", tags); // Update custom tags
 
@@ -240,7 +244,7 @@ function Bookmarks() {
       setBookmarks((prevBookmarks) => {
         const updatedBookmarks = [
           ...prevBookmarks,
-          { ...newBookmark, tags: uniqueTagsArray, mltags: [] }
+          { ...newBookmark, tags: uniqueTagsArray, mltags: _mlTags   }
         ];
         localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks)); // Update localStorage
         return updatedBookmarks;
@@ -254,6 +258,9 @@ function Bookmarks() {
   const handleDeleteBookmark = (url: string) => {
     const index = bookmarks.findIndex((bookmark) => bookmark.url === url);
     const deletedBookmark = bookmarks[index];
+    //update mltags count
+    handleAddMlTags(deletedBookmark.mltags, 0);
+
     const newBookmarks = [...bookmarks];
 
     newBookmarks.splice(index, 1); // Remove bookmark from array
@@ -261,6 +268,37 @@ function Bookmarks() {
     updateTags(deletedBookmark.tags.join(","), ""); // Update custom tags
 
     setBookmarks(newBookmarks);
+  };
+
+  const handleAddMlTags = (tg: string[], flag: number) => {
+    //increase count of each mltag if flag ==1 and add if not present
+    if (flag == 1) {
+      tg.forEach((tag) => {
+        const existingTag = mlTags.find((t) => t.tagname === tag);
+        if (existingTag) {
+          existingTag.count++;
+        } else {
+          mlTags.push({
+            tagname: tag,
+            show: false,
+            count: 1
+          });
+        }
+      });
+    } else {
+      //decrease count of each mltag if flag ==0 and remove if count ==0
+      tg.forEach((tag) => {
+        const existingTag = mlTags.find((t) => t.tagname === tag);
+        if (existingTag) {
+          existingTag.count--;
+          if (existingTag.count === 0) {
+            const index = mlTags.indexOf(existingTag);
+            mlTags.splice(index, 1);
+          }
+        }
+      });
+    }
+    setMlTags(mlTags);
   };
 
   const updateTags = (oldtags: string, newtags: string) => {
@@ -648,27 +686,41 @@ function Bookmarks() {
 
                 {bookmarkCategory === "ml" && (
                   <div className="flex flex-col justify-start px-4">
-                    {mlTags.map((tag, index) => (
+                    {mlTags.map((__tag, index) => (
                       <div key={index} className="h-max">
                         <div className="flex items-center">
-                          <span className="tag">{tag.tagname}</span>
+                          <span
+                            className="__tag"
+                            onClick={function () {
+                              __tag.show = !__tag.show;
+                              setMlTags([...mlTags]);
+                              // console.log("customTags", customTags);
+                            }}>
+                            {__tag.tagname}
+                            {__tag.show ? (
+                              <ChevronDown className="w-5 opacity-[5] ml-1" />
+                            ) : (
+                              <ChevronRight className="w-5 opacity-[5] ml-1" />
+                            )}
+                          </span>
                         </div>
-                        {bookmarks
-                          .filter((bookmark) => {
-                            if (bookmark.mltags.includes(tag.tagname)) {
-                              return bookmark;
-                            }
-                          })
-                          .map((bookmark, index) => (
-                            <Bookmark
-                              key={index}
-                              bookmark={bookmark}
-                              index={index}
-                              handleBookmarkClick={handleBookmarkClick}
-                              handleModifyBookmark={handleModifyBookmark}
-                              handleDeleteBookmark={handleDeleteBookmark}
-                            />
-                          ))}
+                        {__tag.show &&
+                          bookmarks
+                            .filter((bookmark) => {
+                              if (bookmark.mltags.includes(__tag.tagname)) {
+                                return bookmark;
+                              }
+                            })
+                            .map((bookmark, index) => (
+                              <Bookmark
+                                key={index}
+                                bookmark={bookmark}
+                                index={index}
+                                handleBookmarkClick={handleBookmarkClick}
+                                handleModifyBookmark={handleModifyBookmark}
+                                handleDeleteBookmark={handleDeleteBookmark}
+                              />
+                            ))}
                       </div>
                     ))}
                   </div>

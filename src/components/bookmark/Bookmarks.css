@@ -256,6 +256,25 @@
   font-size: small;
 }
 
+.__tag {
+  width: 100%;
+  align-items: center;
+  padding-left: 10px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin-bottom: 5px;
+  display: flex;
+  background-color: #000000b2;
+  color: white;
+  /* border: solid 1px black; */
+  /* border-radius: 10px; */
+  border-radius:10px;
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: small;
+}
 .newBookmark {
   width: calc(100% - 20px);
   /* width: 100%; */
